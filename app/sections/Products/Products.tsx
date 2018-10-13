@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-interface Props {}
+import {ProductDetails} from './components';
 
-export default function Products({}: Props) {
-  return <div>Products</div>;
+export default function Products() {
+  return <ProductDetails />;
 }

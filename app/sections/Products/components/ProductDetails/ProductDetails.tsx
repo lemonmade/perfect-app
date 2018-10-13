@@ -1,7 +1,6 @@
 import * as React from 'react';
+import {Page} from '@shopify/polaris';
 
-interface Props {}
-
-export default function ProductDetails({}: Props) {
-  return <div>ProductDetails</div>;
+export default function ProductDetails() {
+  return <Page title="A product">Product details</Page>;
 }

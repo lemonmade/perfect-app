@@ -6,7 +6,7 @@ import {NotFound} from 'components';
 export default function Routes() {
   return (
     <Switch>
-      <Route exact path="/" component={Products} />
+      <Route path="/products" component={Products} />
       <Route component={NotFound} />
     </Switch>
   );

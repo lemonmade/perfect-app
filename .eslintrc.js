@@ -5,6 +5,9 @@ module.exports = {
     'plugin:shopify/polaris',
     'plugin:shopify/jest',
   ],
+  rules: {
+    'react/jsx-no-bind': 'off',
+  },
   overrides: [
     {
       files: ['*.test.*'],

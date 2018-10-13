@@ -3,6 +3,11 @@ import App from '../app';
 
 const appContainer: HTMLElement | null = document.getElementById('app');
 
+const meta = document.createElement('meta');
+meta.setAttribute('http-equiv', 'Content-Security-Policy');
+meta.setAttribute('content', "img-src 'none'");
+document.head.appendChild(meta);
+
 if (module.hot) {
   module.hot.accept('./index.ts');
   module.hot.accept('../app', () => {

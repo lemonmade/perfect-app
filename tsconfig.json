@@ -20,7 +20,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "*": ["*", "app/*", "config/typescript/modules/*"]
+      "*": ["*", "packages/*", "app/*", "config/typescript/modules/*"]
     },
     "rootDir": ".",
     "strict": true,
@@ -31,6 +31,7 @@
   "include": [
     "./config/typescript/**/*",
     "./app/**/*",
+    "./packages/**/*",
     "./client/**/*",
     "./server/**/*",
     "./tests/**/*"

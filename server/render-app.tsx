@@ -4,14 +4,17 @@ import {resolve} from 'path';
 import {readJSONSync} from 'fs-extra';
 import {renderToString} from 'react-dom/server';
 import {StaticRouter} from 'react-router-dom';
-import HTML, {DOCTYPE} from '@shopify/react-html';
+
+import Html, {DOCTYPE} from '@shopify/react-html';
+import extract from '@shopify/react-extract/server';
+import {ServerManager, StatusCode, Header} from '@shopify/react-network';
 
 import {vendorBundleUrl} from '../config/server';
 import App from '../app';
 
 const assetsPath = resolve(__dirname, '../build/client/assets.json');
 
-export default function renderApp(ctx: Context) {
+export default async function renderApp(ctx: Context) {
   const {js, css} = readJSONSync(assetsPath).entrypoints.main;
   const scripts =
     // eslint-disable-next-line no-process-env
@@ -19,26 +22,34 @@ export default function renderApp(ctx: Context) {
       ? [{path: vendorBundleUrl}, ...js]
       : js;
 
-  const context = {};
+  const networkManager = new ServerManager();
+  const app = (
+    <StaticRouter location={ctx.request.url} context={{}}>
+      <App networkManager={networkManager} />
+    </StaticRouter>
+  );
 
-  try {
-    ctx.status = 200;
-    ctx.body =
-      DOCTYPE +
-      renderToString(
-        // eslint-disable-next-line react/jsx-pascal-case
-        <HTML
-          scripts={scripts}
-          styles={css}
-          // eslint-disable-next-line no-process-env
-          hideForInitialLoad={Boolean(process.env.NODE_ENV === 'development')}
-        >
-          <StaticRouter location={ctx.request.url} context={context}>
-            <App />
-          </StaticRouter>
-        </HTML>,
-      );
-  } catch (error) {
-    throw error;
-  }
+  await extract(app);
+
+  ctx.body =
+    DOCTYPE +
+    renderToString(
+      // eslint-disable-next-line react/jsx-pascal-case
+      <Html
+        scripts={scripts}
+        styles={css}
+        // eslint-disable-next-line no-process-env
+        hideForInitialLoad={Boolean(process.env.NODE_ENV === 'development')}
+      >
+        {app}
+      </Html>,
+    );
+
+  const {status, csp} = networkManager.extract();
+  const cspHeader = Object.entries(csp)
+    .map(([key, sources]) => `${key} ${sources.join(' ')}`)
+    .join('; ');
+
+  ctx.set(Header.ContentSecurityPolicy, cspHeader);
+  ctx.status = status || StatusCode.Ok;
 }
