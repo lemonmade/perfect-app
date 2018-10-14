@@ -268,6 +268,11 @@
     "@shopify/javascript-utilities" "^2.1.0"
     lodash "^4.17.5"
 
+"@shopify/i18n@^0.1.0":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@shopify/i18n/-/i18n-0.1.1.tgz#dbb03565abb9bbdb17e9dd363316b05013b81bb9"
+  integrity sha512-wPM5dQCC9wBBEXuFEZAt+dhWPSBhw4Sq/ceMASQjy9WwHpSp2JNFG9YzH0GuVzcLsTvgXhSokkpQAfp7rCqeWg==
+
 "@shopify/images@^1.1.0", "@shopify/images@^1.1.4":
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/@shopify/images/-/images-1.1.5.tgz#f7ae5d5801b4550085480825ceda66420d9ff700"
@@ -315,12 +320,12 @@
     react-transition-group "^2.3.0"
     tslib "^1.8.0"
 
-"@shopify/react-compose@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@shopify/react-compose/-/react-compose-0.1.5.tgz#62189b6205cce8ce793e180f8ec9ec5bf588ad34"
-  integrity sha512-OXHLZN3+Qtn9cioBwpOepg0IiDS4ky0DOXKqhcPr2o34WgX6+r1IHqF5f8QfeoCd+LY8V3oTwfHgf67uq4jz/w==
+"@shopify/react-compose@^0.1.7":
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/@shopify/react-compose/-/react-compose-0.1.7.tgz#d4bb9aff143fd38e29d20f0945bb37a94c58ca23"
+  integrity sha512-GwZeH9x/LZolXAg63SV4ZEn4NNwlOhIhj2DVSbOheJKqNYFebzFE/KKzBv0mBXWchPRyY84Pm398wl1N63b8Cg==
   dependencies:
-    hoist-non-react-statics "^2.5.0"
+    hoist-non-react-statics "^3.0.1"
 
 "@shopify/react-html@^3.0.2":
   version "3.0.2"
@@ -337,6 +342,17 @@
   dependencies:
     "@shopify/react-serialize" "^1.0.6"
     react-helmet "^5.2.0"
+
+"@shopify/react-i18n@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@shopify/react-i18n/-/react-i18n-0.2.0.tgz#6e91e7ff376a3146f7ec9137a7c61cc5626a50e6"
+  integrity sha512-R3/X1rRfObi/NsqbLQrreZLlNEuOYX85Co6jTnnJJ6Mf3gvk/f9NBj2Hq2KzB9PootO/RsqYm+ljsjq3rgBbtw==
+  dependencies:
+    "@shopify/i18n" "^0.1.0"
+    "@types/hoist-non-react-statics" "^3.0.1"
+    hoist-non-react-statics "^3.0.1"
+    prop-types "^15.6.2"
+    react-tree-walker "^4.3.0"
 
 "@shopify/react-serialize@^1.0.6":
   version "1.0.6"
@@ -578,6 +594,13 @@
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.2.tgz#12cfaba693ba20f114ed5765467ff25fdf67ddb0"
   integrity sha512-eVAb52MJ4lfPLiO9VvTgv8KaZDEIqCwhv+lXOMLlt4C1YHTShgmMULEg0RrCbnqfYd6QKfHsMp0MiX0vWISpSw==
 
+"@types/hoist-non-react-statics@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.0.1.tgz#dde7c53101912dae8f45a1807f9857a59ddf3919"
+  integrity sha512-3wTz66vV+WatOAjMST+hKCmo01KYPFgnsu+QeLcn0FuwPCoymX6aj1a4RvFCdVsfh2m0hfTPhE/zTv4M28ho1Q==
+  dependencies:
+    "@types/react" "*"
+
 "@types/http-assert@*":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@types/http-assert/-/http-assert-1.3.0.tgz#5e932606153da28e1d04f9043f4912cf61fd55dd"
@@ -711,6 +734,11 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/serialize-javascript@^1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@types/serialize-javascript/-/serialize-javascript-1.3.2.tgz#fba3efd1c28806921d4fba56709494e4511048d6"
+  integrity sha512-CylhBN39Azugb0/RMryDEYLJjzGxGP0IAlk4aYnBtWg7PESKrbAPhGRkZaf4ecCSjR0dKp3Zu+2LpxxhV2x/6g==
 
 "@types/serve-static@*":
   version "1.13.2"
@@ -6389,6 +6417,13 @@ hoist-non-react-statics@^2.5.0:
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
 
+hoist-non-react-statics@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.0.1.tgz#fba3e7df0210eb9447757ca1a7cb607162f0a364"
+  integrity sha512-1kXwPsOi0OGQIZNVMPvgWJ9tSnGMiMfJdihqEzrPEXlHOBh9AAHXX/QYmAJTXztnz/K+PQ8ryCb4eGaN6HlGbQ==
+  dependencies:
+    react-is "^16.3.2"
+
 home-or-tmp@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/home-or-tmp/-/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
@@ -11064,6 +11099,11 @@ react-hot-loader@^3.1.3:
     react-proxy "^3.0.0-alpha.0"
     redbox-react "^1.3.6"
     source-map "^0.6.1"
+
+react-is@^16.3.2:
+  version "16.5.2"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.5.2.tgz#e2a7b7c3f5d48062eb769fcb123505eb928722e3"
+  integrity sha512-hSl7E6l25GTjNEZATqZIuWOgSnpXb3kD0DVCujmg46K5zLxsbiKaaT6VO9slkSBDPZfYs30lwfJwbOFOnoEnKQ==
 
 react-is@^16.4.1:
   version "16.4.1"
