@@ -8,6 +8,8 @@ interface Props {
   withManager(manager: Manager): void;
 }
 
+export const EXTRACT_ID = Symbol('network');
+
 export default function NetworkComponent({withManager}: Props) {
   if (typeof window !== 'undefined') {
     return null;
@@ -16,7 +18,7 @@ export default function NetworkComponent({withManager}: Props) {
   return (
     <Consumer>
       {(manager) => (
-        <Extract>
+        <Extract kind={EXTRACT_ID}>
           {() => {
             withManager(manager);
           }}

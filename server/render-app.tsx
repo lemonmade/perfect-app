@@ -6,7 +6,10 @@ import {renderToStaticMarkup} from 'react-dom/server';
 import {StaticRouter} from 'react-router-dom';
 
 import {Html, DOCTYPE} from '@shopify/react-html-next';
-import {Serializer} from '@shopify/react-serialize-next';
+import {
+  SerializeData,
+  Manager as SerializationManager,
+} from '@shopify/react-serialize-next';
 import extract from '@shopify/react-extract/server';
 import {ServerManager, StatusCode, Header} from '@shopify/react-network';
 import {getTranslationsFromTree} from '@shopify/react-i18n';
@@ -25,11 +28,16 @@ export default async function renderApp(ctx: Context) {
       : js;
 
   const networkManager = new ServerManager();
+  const serializationManager = new SerializationManager();
   const locale = 'fr';
 
   const app = (
     <StaticRouter location={ctx.request.url} context={{}}>
-      <App networkManager={networkManager} locale={locale} />
+      <App
+        locale={locale}
+        networkManager={networkManager}
+        serializationManager={serializationManager}
+      />
     </StaticRouter>
   );
 
@@ -45,8 +53,8 @@ export default async function renderApp(ctx: Context) {
         styles={css}
         bodyMarkup={
           <>
-            <Serializer id="locale">{locale}</Serializer>
-            <Serializer id="initialTranslations">{translations}</Serializer>
+            <SerializeData id="initialTranslations" data={translations} />
+            {serializationManager.toElements()}
           </>
         }
         // eslint-disable-next-line no-process-env

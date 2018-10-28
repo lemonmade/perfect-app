@@ -4,3 +4,4 @@ export {default as ImageSrc} from './ImageSrc';
 export {default as ScriptSrc} from './ScriptSrc';
 export {default as Status} from './Status';
 export {default as StyleSrc} from './StyleSrc';
+export {EXTRACT_ID} from './NetworkComponent';

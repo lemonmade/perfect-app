@@ -4,14 +4,14 @@ import {ATTRIBUTE} from './utilities';
 
 interface Props {
   id: string;
-  children: any;
+  data: any;
 }
 
-export default function Serializer({id, children}: Props) {
+export default function SerializeData({id, data}: Props) {
   return (
     <script
       type="text/json"
-      dangerouslySetInnerHTML={{__html: serialize(children)}}
+      dangerouslySetInnerHTML={{__html: serialize(data)}}
       {...{[ATTRIBUTE]: id}}
     />
   );
