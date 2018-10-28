@@ -1,38 +1,26 @@
-import * as PropTypes from 'prop-types';
-import {merge} from 'lodash';
-import {MountRendererProps} from 'enzyme';
+import * as React from 'react';
+import {mount, MountRendererProps} from 'enzyme';
+import {ErrorBoundary} from '@shopify/react-testing';
 import {createPolarisContext, polarisContextTypes} from '@shopify/polaris';
-import {PartialRouterContext, createDefaultRouterContext} from './router';
 
 export * from '@shopify/enzyme-utilities';
 
-interface Configs {
-  additionalOptions?: MountRendererProps;
-  router?: PartialRouterContext;
+export function mountWithAppContext(element: React.ReactElement<any>) {
+  return mount(<AppContext>{element}</AppContext>);
 }
 
-export function createWithAppMountOptions(
-  configs?: Configs,
-): MountRendererProps {
-  const polarisOptions = {
-    context: {...createPolarisContext()},
-    childContextTypes: polarisContextTypes,
-  };
+interface Props {
+  children: React.ReactNode;
+}
 
-  const defaultRouter = createDefaultRouterContext();
-  const mergedRouter = merge(defaultRouter, (configs && configs.router) || {});
-  const routerOptions = {
-    context: {
-      router: mergedRouter,
-    },
+class AppContext extends React.Component<Props> {
+  static childContextTypes = {...polarisContextTypes};
 
-    childContextTypes: {
-      router: PropTypes.object,
-    },
-  };
+  getChildContext() {
+    return createPolarisContext();
+  }
 
-  const additionalOptions =
-    configs && configs.additionalOptions ? {...configs.additionalOptions} : {};
-
-  return merge(additionalOptions, polarisOptions, routerOptions);
+  render() {
+    return <ErrorBoundary>{this.props.children}</ErrorBoundary>;
+  }
 }

@@ -28,8 +28,7 @@ module.exports = function sewingKitConfig(plugins, env) {
       ]),
       plugins.jest((config) => {
         config.setupFiles.push(path.join(tests, 'setup.ts'));
-        config.setupTestFrameworkScriptFile =
-          './node_modules/jest-enzyme/lib/index.js';
+        config.setupTestFrameworkScriptFile = path.join(tests, 'each-test.ts');
         return config;
       }),
     ],

@@ -9,11 +9,13 @@ interface State {
 }
 
 export default class ErrorBoundary extends React.Component<Props, State> {
+  state: State = {};
+
   componentDidCatch(error: Error) {
     this.setState({error});
   }
 
   render() {
-    return this.props.children;
+    return this.state.error ? null : this.props.children;
   }
 }
