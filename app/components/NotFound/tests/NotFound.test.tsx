@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {withIgnoredReactLogs} from '@shopify/react-testing';
 import {mountWithAppContext} from 'tests/utilities';
 
 function MyComponent() {
@@ -8,7 +9,9 @@ function MyComponent() {
 
 describe('<NotFound />', () => {
   it('throws', () => {
-    const myComponent = mountWithAppContext(<MyComponent />);
+    const myComponent = withIgnoredReactLogs(() =>
+      mountWithAppContext(<MyComponent />),
+    );
     expect(myComponent).toHaveThrownErrorDuringRender();
   });
 });
