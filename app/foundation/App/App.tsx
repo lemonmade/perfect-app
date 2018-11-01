@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import ApolloClient from 'apollo-client';
 import {ApolloProvider} from 'react-apollo';
+import {StaticRouter, BrowserRouter} from 'react-router-dom';
 
 import {AppProvider} from '@shopify/polaris';
 import {
@@ -26,6 +27,8 @@ import {ContentSecurityPolicy} from './components';
 import createGraphQLClient from './graphql/client';
 
 interface Props {
+  server?: boolean;
+  location?: string;
   locale?: string;
   graphQLClient?: ApolloClient<unknown>;
   networkManager?: NetworkManager;
@@ -42,6 +45,8 @@ interface Serialized {
 export default class App extends React.Component<Props> {
   render() {
     const {
+      server,
+      location,
       graphQLClient,
       networkManager,
       serializationManager,
@@ -60,6 +65,7 @@ export default class App extends React.Component<Props> {
               apollo,
               locale: serializedLocale = locale,
             }) => {
+              const Router = server && location ? StaticRouter : BrowserRouter;
               const client =
                 graphQLClient ||
                 createGraphQLClient({
@@ -78,7 +84,9 @@ export default class App extends React.Component<Props> {
                       }
                     >
                       <AppProvider linkComponent={Link}>
-                        <Routes />
+                        <Router location={location} context={{}}>
+                          <Routes />
+                        </Router>
                       </AppProvider>
                     </I18nProvider>
                   </ApolloProvider>

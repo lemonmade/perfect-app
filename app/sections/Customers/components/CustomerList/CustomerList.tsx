@@ -1,46 +1,69 @@
 import * as React from 'react';
-import {Query} from 'react-apollo';
 
+import {Query} from '@shopify/react-apollo';
 import {withI18n, WithI18nProps} from '@shopify/react-i18n';
 import compose from '@shopify/react-compose';
 import {Page, Card, ResourceList, Avatar} from '@shopify/polaris';
+import {parseGid, nodesFromEdges} from '@shopify/admin-graphql-api-utilities';
 
 import en from './translations/en.json';
-import customerListQuery from './graphql/CustomerListQuery.graphql';
 
-function CustomerList({i18n}: WithI18nProps) {
-  return (
-    <Page title={i18n.translate('title')}>
-      <Query query={customerListQuery}>
-        {({data, networkStatus}) => {
-          const customers = data.customers
-            ? data.customers.edges.map(({node}) => node)
-            : [];
+import customerListQuery, {
+  CustomerListQueryData,
+} from './graphql/CustomerListQuery.graphql';
 
-          return (
-            <Card>
-              <ResourceList
-                items={customers}
-                renderItem={(customer) => (
-                  <ResourceList.Item
-                    id={customer.id}
-                    url={urlForCustomer(customer)}
-                    media={<Avatar customer />}
-                  >
-                    {customer.displayName}
-                  </ResourceList.Item>
-                )}
-              />
-            </Card>
-          );
-        }}
-      </Query>
-    </Page>
-  );
+interface State {
+  selectedCustomers: string[] | 'All';
 }
 
-function urlForCustomer({id}: any) {
-  return `/customer/${id.split('/').pop()}`;
+class CustomerList extends React.PureComponent<WithI18nProps, State> {
+  state: State = {selectedCustomers: []};
+
+  render() {
+    const {i18n} = this.props;
+
+    return (
+      <Page
+        title={i18n.translate('title')}
+        primaryAction={{content: 'New customer', url: '/customers/new'}}
+      >
+        <Query query={customerListQuery}>
+          {({data}) => {
+            const customers =
+              data && data.customers
+                ? nodesFromEdges(data.customers.edges)
+                : [];
+
+            return (
+              <Card>
+                <ResourceList
+                  items={customers}
+                  selectedItems={this.state.selectedCustomers}
+                  bulkActions={[{content: 'Delete', onAction: () => {}}]}
+                  onSelectionChange={(selectedCustomers) =>
+                    this.setState({selectedCustomers})
+                  }
+                  renderItem={(customer) => (
+                    <ResourceList.Item
+                      id={`Customer${parseGid(customer.id)}`}
+                      url={urlForCustomer(customer)}
+                      media={<Avatar customer />}
+                    >
+                      {customer.displayName}
+                    </ResourceList.Item>
+                  )}
+                />
+              </Card>
+            );
+          }}
+        </Query>
+      </Page>
+    );
+  }
+}
+
+function urlForCustomer({id}: CustomerListQueryData.CustomersEdgesNode) {
+  return `/customers/${parseGid(id)}`;
 }
 
 export default compose<{}>(

@@ -9,7 +9,9 @@ import {
 export default function ContentSecurityPolicy() {
   return (
     <>
-      <DefaultSrc sources={[SpecialSource.Self, 'localhost:8080']} />
+      <DefaultSrc
+        sources={[SpecialSource.Self, 'localhost:8080', 'https://*']}
+      />
       <ImageSrc
         sources={[SpecialSource.Self, 'localhost:8080', SpecialSource.Data]}
       />

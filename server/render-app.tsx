@@ -3,7 +3,6 @@ import * as React from 'react';
 import {Context} from 'koa';
 import {readJSONSync} from 'fs-extra';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {StaticRouter} from 'react-router-dom';
 import {getDataFromTree} from 'react-apollo';
 
 import {Html, DOCTYPE} from '@shopify/react-html-next';
@@ -39,14 +38,14 @@ export default async function renderApp(ctx: Context) {
   });
 
   const app = (
-    <StaticRouter location={ctx.request.url} context={{}}>
-      <App
-        locale={locale}
-        graphQLClient={graphQLClient}
-        networkManager={networkManager}
-        serializationManager={serializationManager}
-      />
-    </StaticRouter>
+    <App
+      server
+      locale={locale}
+      location={ctx.request.url}
+      graphQLClient={graphQLClient}
+      networkManager={networkManager}
+      serializationManager={serializationManager}
+    />
   );
 
   await getDataFromTree(app);

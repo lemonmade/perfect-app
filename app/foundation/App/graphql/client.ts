@@ -35,10 +35,10 @@ export default function createGraphQLClient({
   });
 
   return new ApolloClient({
+    link,
     ssrMode: server,
     ssrForceFetchDelay: 100,
-    connectToDevTools: !server && process.env.NODE_ENV === 'development',
-    link,
     cache: initialData ? cache.restore(initialData) : cache,
+    connectToDevTools: !server && process.env.NODE_ENV === 'development',
   });
 }

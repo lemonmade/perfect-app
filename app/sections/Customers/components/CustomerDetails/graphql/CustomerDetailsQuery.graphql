@@ -1,0 +1,8 @@
+query CustomerDetails($id: ID!) {
+  customer(id: $id) {
+    id
+    firstName
+    lastName
+    displayName
+  }
+}

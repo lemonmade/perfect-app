@@ -195,6 +195,11 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.1.tgz#53f349bb986ab273d601175aa1b25a655ab90ee3"
   integrity sha512-KU/VDjC5RwtDUZiz3d+DHXJF2lp5hB9dn552TXIyptj8SH1vXmR40mG0JgGq03IlYsOgGfcv8xrLpSQ0YUMQdA==
 
+"@shopify/admin-graphql-api-utilities@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@shopify/admin-graphql-api-utilities/-/admin-graphql-api-utilities-0.0.2.tgz#cf41a7e75002fe49c0d09aa4385168506afcf0cc"
+  integrity sha512-dcamkcyu2huvo+3gSQEAWla2AELTTx/P/2OtyCsu7ytqqqThqxUuuzKEn0dAKL6QtutGf9lHFa24AdlqBKS1yA==
+
 "@shopify/enzyme-utilities@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@shopify/enzyme-utilities/-/enzyme-utilities-1.1.1.tgz#1e747ffc4cc8614187c74121d4a775995efe8fa1"
@@ -268,6 +273,14 @@
   integrity sha512-GwZeH9x/LZolXAg63SV4ZEn4NNwlOhIhj2DVSbOheJKqNYFebzFE/KKzBv0mBXWchPRyY84Pm398wl1N63b8Cg==
   dependencies:
     hoist-non-react-statics "^3.0.1"
+
+"@shopify/react-form-state@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@shopify/react-form-state/-/react-form-state-0.5.0.tgz#4610df5685ac6f36882b64e68b2b080541a27028"
+  integrity sha512-my4O1liw08Pirvmze6ZwXhCleS2uNpEaI1uJKnhqTaEi8jsNO81Vd4qFvERtkTyXsdE8mvWiadxx/QcoREl8wA==
+  dependencies:
+    lodash "^4.17.10"
+    lodash-decorators "^6.0.0"
 
 "@shopify/react-html@^3.0.2":
   version "3.0.2"
@@ -8518,6 +8531,13 @@ lodash-decorators@^4.3.5:
   dependencies:
     tslib "^1.7.1"
 
+lodash-decorators@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/lodash-decorators/-/lodash-decorators-6.0.0.tgz#4e0639ba639d738e5f4993acf54bf292cc95d851"
+  integrity sha512-rGNmvlPs/hmXM53Bso2+OAj/x7k6MiQxI2GIW537vuQ2ojfCJdohjzM+WC7r3glJgC5yBNzD5IdXkF+vluTr0A==
+  dependencies:
+    tslib "^1.9.2"
+
 lodash-webpack-plugin@^0.11.5:
   version "0.11.5"
   resolved "https://registry.yarnpkg.com/lodash-webpack-plugin/-/lodash-webpack-plugin-0.11.5.tgz#c4bd064b4f561c3f823fa5982bdeb12c475390b9"
@@ -13332,7 +13352,7 @@ tsconfig-paths@^3.6.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@^1.7.1, tslib@^1.8.0, tslib@^1.9.0:
+tslib@^1.7.1, tslib@^1.8.0, tslib@^1.9.0, tslib@^1.9.2:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
   integrity sha512-4krF8scpejhaOgqzBEcGM7yDIEfi0/8+8zDRZhNZZ2kjmHJ4hv3zCbQWxoJGz1iw5U0Jl0nma13xzHXcncMavQ==
