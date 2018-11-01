@@ -1,3 +1,2 @@
-import App from './App';
-
-export default App;
+export {default} from './App';
+export {default as createGraphQLClient} from './graphql/client';

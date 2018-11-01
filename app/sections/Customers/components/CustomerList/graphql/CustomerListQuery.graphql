@@ -1,0 +1,10 @@
+query CustomerList {
+  customers(first: 10) {
+    edges {
+      node {
+        id
+        displayName
+      }
+    }
+  }
+}

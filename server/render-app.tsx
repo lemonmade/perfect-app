@@ -1,9 +1,10 @@
+import {resolve} from 'path';
 import * as React from 'react';
 import {Context} from 'koa';
-import {resolve} from 'path';
 import {readJSONSync} from 'fs-extra';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {StaticRouter} from 'react-router-dom';
+import {getDataFromTree} from 'react-apollo';
 
 import {Html, DOCTYPE} from '@shopify/react-html-next';
 import {
@@ -15,7 +16,7 @@ import {ServerManager, StatusCode, Header} from '@shopify/react-network';
 import {getTranslationsFromTree} from '@shopify/react-i18n';
 
 import {vendorBundleUrl} from '../config/server';
-import App from '../app';
+import App, {createGraphQLClient} from '../app';
 
 const assetsPath = resolve(__dirname, '../build/client/assets.json');
 
@@ -29,18 +30,26 @@ export default async function renderApp(ctx: Context) {
 
   const networkManager = new ServerManager();
   const serializationManager = new SerializationManager();
-  const locale = 'fr';
+  const locale = 'en';
+
+  const graphQLClient = createGraphQLClient({
+    server: true,
+    shop: process.env.SHOP_HOST,
+    accessToken: process.env.SHOPIFY_PASSWORD,
+  });
 
   const app = (
     <StaticRouter location={ctx.request.url} context={{}}>
       <App
         locale={locale}
+        graphQLClient={graphQLClient}
         networkManager={networkManager}
         serializationManager={serializationManager}
       />
     </StaticRouter>
   );
 
+  await getDataFromTree(app);
   await extract(app);
   const translations = await getTranslationsFromTree(app);
 

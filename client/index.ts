@@ -1,12 +1,7 @@
-import renderApp from './render-app';
 import App from '../app';
+import renderApp from './render-app';
 
 const appContainer: HTMLElement | null = document.getElementById('app');
-
-const meta = document.createElement('meta');
-meta.setAttribute('http-equiv', 'Content-Security-Policy');
-meta.setAttribute('content', "img-src 'none'");
-document.head.appendChild(meta);
 
 if (module.hot) {
   module.hot.accept('./index.ts');
