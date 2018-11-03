@@ -1,5 +1,5 @@
 query CustomerList {
-  customers(first: 10) {
+  customers(first: 50) {
     edges {
       node {
         id
