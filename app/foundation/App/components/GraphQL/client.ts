@@ -2,7 +2,7 @@ import ApolloClient from 'apollo-client';
 import {createHttpLink} from 'apollo-link-http';
 import {InMemoryCache, NormalizedCacheObject} from 'apollo-cache-inmemory';
 
-interface Options {
+export interface Options {
   shop?: string;
   server?: boolean;
   accessToken?: string;
