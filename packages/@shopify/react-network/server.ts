@@ -5,6 +5,12 @@ import {Manager} from './manager';
 export class ServerManager implements Manager {
   private statusCodes: StatusCode[] = [];
   private csp = new Map<CspDirective, string[]>();
+  private redirectUrl?: string;
+
+  redirectTo(url: string, status = StatusCode.Found) {
+    this.addStatusCode(status);
+    this.redirectUrl = url;
+  }
 
   addStatusCode(statusCode: StatusCode) {
     this.statusCodes.push(statusCode);
@@ -24,6 +30,7 @@ export class ServerManager implements Manager {
         (csp, [directive, sources]) => ({...csp, [directive]: sources}),
         {},
       ),
+      redirectUrl: this.redirectUrl,
     };
   }
 }
@@ -32,13 +39,20 @@ export function applyToContext<T extends Context>(
   ctx: T,
   manager: ServerManager,
 ) {
-  const {status, csp} = manager.extract();
+  const {status, csp, redirectUrl} = manager.extract();
   const cspHeader = Object.entries(csp)
     .map(([key, sources]) => `${key} ${sources.join(' ')}`)
     .join('; ');
 
   ctx.set(Header.ContentSecurityPolicy, cspHeader);
-  ctx.status = status || StatusCode.Ok;
+
+  if (redirectUrl) {
+    ctx.redirect(redirectUrl);
+  }
+
+  if (status) {
+    ctx.status = status;
+  }
 
   return ctx;
 }

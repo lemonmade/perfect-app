@@ -16,7 +16,9 @@ export default function Customers() {
           match: {
             params: {id},
           },
-        }: RouteComponentProps<{id: string}>) => <CustomerDetails id={id} />}
+        }: RouteComponentProps<{id: string}>) => (
+          <CustomerDetails key={id} id={id} />
+        )}
       />
       <Route path="*" component={NotFound} />
     </Switch>

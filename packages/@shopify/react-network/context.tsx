@@ -1,9 +1,9 @@
 // https://gist.github.com/tyscorp/24516f1fdb8974a637b075cc9167a690
 
 import * as React from 'react';
-import {Manager, BrowserManager} from '@shopify/react-network/manager';
+import {Manager, NoopManager} from './manager';
 
-const {Consumer, Provider} = React.createContext<Manager>(new BrowserManager());
+const {Consumer, Provider} = React.createContext<Manager>(new NoopManager());
 
 interface Props {
   manager?: Manager;

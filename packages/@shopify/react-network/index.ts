@@ -10,5 +10,5 @@ export {
 } from '@shopify/network';
 
 export * from './components';
-export {Manager, BrowserManager, ServerManager} from './manager';
+export {Manager, NoopManager} from './manager';
 export {Consumer, Provider} from './context';
