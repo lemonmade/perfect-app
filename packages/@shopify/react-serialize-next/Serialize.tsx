@@ -14,7 +14,7 @@ export default function Serialize({id, data}: Props) {
     <Consumer>
       {(manager) =>
         manager ? (
-          <Extract kind={EXTRACT_ID}>{() => manager.add(id, data())}</Extract>
+          <Extract kind={EXTRACT_ID} extract={() => manager.add(id, data())} />
         ) : null
       }
     </Consumer>

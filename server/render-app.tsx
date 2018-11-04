@@ -1,18 +1,17 @@
+/* eslint no-process-env: off */
+
 import {resolve} from 'path';
 import * as React from 'react';
 import {Context} from 'koa';
 import {readJSONSync} from 'fs-extra';
-import {renderToStaticMarkup} from 'react-dom/server';
 import {getDataFromTree} from 'react-apollo';
 
-import {Html, DOCTYPE} from '@shopify/react-html-next';
-import {
-  SerializeData,
-  Manager as SerializationManager,
-} from '@shopify/react-serialize-next';
 import extract from '@shopify/react-extract/server';
-import {ServerManager, StatusCode, Header} from '@shopify/react-network';
-import {getTranslationsFromTree} from '@shopify/react-i18n';
+import {Html, render} from '@shopify/react-html-next/server';
+import {ServerManager, applyToContext} from '@shopify/react-network/server';
+
+import {Manager as SerializationManager} from '@shopify/react-serialize-next';
+import {Manager as I18nManager} from '@shopify/react-i18n-next';
 
 import {vendorBundleUrl} from '../config/server';
 import App, {createGraphQLClient} from '../app';
@@ -27,9 +26,10 @@ export default async function renderApp(ctx: Context) {
       ? [{path: vendorBundleUrl}, ...js]
       : js;
 
+  const locale = 'fr';
+  const i18nManager = new I18nManager({locale});
   const networkManager = new ServerManager();
   const serializationManager = new SerializationManager();
-  const locale = 'en';
 
   const graphQLClient = createGraphQLClient({
     server: true,
@@ -42,6 +42,7 @@ export default async function renderApp(ctx: Context) {
       server
       locale={locale}
       location={ctx.request.url}
+      i18nManager={i18nManager}
       graphQLClient={graphQLClient}
       networkManager={networkManager}
       serializationManager={serializationManager}
@@ -50,33 +51,18 @@ export default async function renderApp(ctx: Context) {
 
   await getDataFromTree(app);
   await extract(app);
-  const translations = await getTranslationsFromTree(app);
 
-  ctx.body =
-    DOCTYPE +
-    renderToStaticMarkup(
-      <Html
-        locale={locale}
-        scripts={scripts}
-        styles={css}
-        bodyMarkup={
-          <>
-            <SerializeData id="initialTranslations" data={translations} />
-            {serializationManager.toElements()}
-          </>
-        }
-        // eslint-disable-next-line no-process-env
-        hideForInitialLoad={Boolean(process.env.NODE_ENV === 'development')}
-      >
-        {app}
-      </Html>,
-    );
+  applyToContext(ctx, networkManager);
 
-  const {status, csp} = networkManager.extract();
-  const cspHeader = Object.entries(csp)
-    .map(([key, sources]) => `${key} ${sources.join(' ')}`)
-    .join('; ');
-
-  ctx.set(Header.ContentSecurityPolicy, cspHeader);
-  ctx.status = status || StatusCode.Ok;
+  ctx.body = render(
+    <Html
+      locale={locale}
+      styles={css}
+      scripts={scripts}
+      serializationManager={serializationManager}
+      hideForInitialLoad={Boolean(process.env.NODE_ENV === 'development')}
+    >
+      {app}
+    </Html>,
+  );
 }

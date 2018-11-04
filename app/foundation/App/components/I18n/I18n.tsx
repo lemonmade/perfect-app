@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {Serialize, WithSerializedValues} from '@shopify/react-serialize-next';
-import {Provider, Manager} from '@shopify/react-i18n';
+import {Provider, Manager} from '@shopify/react-i18n-next';
 import {Omit} from '@shopify/useful-types';
 
 interface Props {
@@ -13,6 +13,9 @@ interface Props {
 interface State {
   manager: Manager;
 }
+
+const LOCALE_SERIALIZE_ID = 'locale';
+const INITIAL_TRANSLATIONS_SERIALIZE_ID = 'initialTranslations';
 
 class I18n extends React.Component<Props, State> {
   state: State = {
@@ -33,7 +36,14 @@ class I18n extends React.Component<Props, State> {
     return (
       <>
         <Provider manager={manager}>{children}</Provider>
-        <Serialize id="locale" data={() => manager.details.locale} />
+        <Serialize
+          id={INITIAL_TRANSLATIONS_SERIALIZE_ID}
+          data={() => manager.extract()}
+        />
+        <Serialize
+          id={LOCALE_SERIALIZE_ID}
+          data={() => manager.details.locale}
+        />
       </>
     );
   }
@@ -45,7 +55,9 @@ export default function ConnectedI18n(
   type SerializedValues = Pick<Props, 'locale' | 'initialTranslations'>;
 
   return (
-    <WithSerializedValues ids={['locale', 'initialTranslations']}>
+    <WithSerializedValues
+      ids={[LOCALE_SERIALIZE_ID, INITIAL_TRANSLATIONS_SERIALIZE_ID]}
+    >
       {({locale, initialTranslations}: SerializedValues) => (
         <I18n
           {...props}

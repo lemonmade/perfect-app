@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {withI18n, WithI18nProps} from '@shopify/react-i18n';
+import {withI18n, WithI18nProps} from '@shopify/react-i18n-next';
 import compose from '@shopify/react-compose';
 import {Page, EmptyState} from '@shopify/polaris';
 import {Status, StatusCode} from '@shopify/react-network';

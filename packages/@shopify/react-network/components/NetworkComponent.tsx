@@ -18,11 +18,7 @@ export default function NetworkComponent({withManager}: Props) {
   return (
     <Consumer>
       {(manager) => (
-        <Extract kind={EXTRACT_ID}>
-          {() => {
-            withManager(manager);
-          }}
-        </Extract>
+        <Extract kind={EXTRACT_ID} extract={() => withManager(manager)} />
       )}
     </Consumer>
   );

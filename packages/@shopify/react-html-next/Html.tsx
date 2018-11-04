@@ -1,6 +1,9 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 import {renderToString} from 'react-dom/server';
+
+import {Manager as SerializationManager} from '@shopify/react-serialize-next';
+
 import {Script, Style} from './components';
 
 export interface TranslationDictionary {
@@ -21,6 +24,7 @@ export interface Props {
   headData?: {[id: string]: any};
   headMarkup?: React.ReactNode;
   bodyMarkup?: React.ReactNode;
+  serializationManager?: SerializationManager;
   hideForInitialLoad?: boolean;
 }
 
@@ -32,6 +36,7 @@ export default function Html({
   styles = [],
   headMarkup = null,
   bodyMarkup = null,
+  serializationManager,
   hideForInitialLoad,
 }: Props) {
   const markup = renderToString(children);
@@ -39,6 +44,10 @@ export default function Html({
 
   const htmlAttributes = helmet.htmlAttributes.toComponent();
   const bodyAttributes = helmet.bodyAttributes.toComponent();
+
+  const serializationMarkup = serializationManager
+    ? serializationManager.toElements()
+    : null;
 
   const stylesMarkup = styles.map((style) => {
     return (
@@ -93,6 +102,7 @@ export default function Html({
         <div id="app" dangerouslySetInnerHTML={{__html: markup}} />
 
         {bodyMarkup}
+        {serializationMarkup}
         {deferredScriptsMarkup}
       </body>
     </html>

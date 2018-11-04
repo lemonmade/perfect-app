@@ -1,17 +1,17 @@
 import {ReactElement} from 'react';
 import reactTreeWalker from 'react-tree-walker';
-import {isExtractable} from './extractable';
+import {isExtractable, METHOD_NAME} from './extractable';
 
 const defaultContext = {
   reactExtractRunning: true,
 };
 
-export default function extract(app: ReactElement<any>, include?: string[]) {
+export default function extract(app: ReactElement<any>, include?: symbol[]) {
   return reactTreeWalker(
     app,
     (_, instance) => {
       return isExtractable(instance)
-        ? instance.extract(include || true)
+        ? instance[METHOD_NAME](include || true)
         : undefined;
     },
     {...defaultContext},

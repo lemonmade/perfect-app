@@ -3,25 +3,25 @@ import {METHOD_NAME, Extractable} from './extractable';
 
 interface Props {
   kind?: symbol;
-  children(): void;
+  extract(): void;
 }
 
 export default class Extract extends React.PureComponent<Props>
   implements Extractable {
   [METHOD_NAME](include: true | symbol[]) {
-    const {kind, children} = this.props;
+    const {kind, extract} = this.props;
 
     if (include === true) {
-      children();
+      extract();
       return;
     }
 
     if (kind != null && include.includes(kind)) {
-      children();
+      extract();
     }
   }
 
   render() {
-    return null;
+    return this.props.children || null;
   }
 }

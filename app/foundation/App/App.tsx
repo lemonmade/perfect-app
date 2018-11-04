@@ -8,6 +8,7 @@ import {
   Manager as SerializationManager,
   Provider as SerializationProvider,
 } from '@shopify/react-serialize-next';
+import {Manager as I18nManager} from '@shopify/react-i18n-next';
 import {
   Manager as NetworkManager,
   Provider as NetworkProvider,
@@ -22,6 +23,7 @@ interface Props {
   server?: boolean;
   location?: string;
   locale?: string;
+  i18nManager?: I18nManager;
   graphQLClient?: ApolloClient<unknown>;
   networkManager?: NetworkManager;
   serializationManager?: SerializationManager;
@@ -33,6 +35,7 @@ export default class App extends React.Component<Props> {
     const {
       server,
       location,
+      i18nManager,
       graphQLClient,
       networkManager,
       serializationManager,
@@ -46,7 +49,7 @@ export default class App extends React.Component<Props> {
         <SerializationProvider manager={serializationManager}>
           <ContentSecurityPolicy />
           <GraphQL client={graphQLClient}>
-            <I18n locale={locale}>
+            <I18n manager={i18nManager} locale={locale}>
               <AppProvider linkComponent={Link}>
                 <Router location={location} context={{}}>
                   <Routes />
