@@ -30,10 +30,13 @@ interface Props {
 
 interface State {
   redirect?: string;
+  mutating: boolean;
 }
 
 export default class CustomerDetails extends React.Component<Props, State> {
-  state: State = {};
+  state: State = {
+    mutating: false,
+  };
 
   private get isCreating() {
     return this.props.id == null;
@@ -42,7 +45,7 @@ export default class CustomerDetails extends React.Component<Props, State> {
   render() {
     const {isCreating} = this;
     const {id} = this.props;
-    const {redirect} = this.state;
+    const {redirect, mutating} = this.state;
 
     if (redirect) {
       return <Redirect url={redirect} />;
@@ -67,73 +70,70 @@ export default class CustomerDetails extends React.Component<Props, State> {
             return <SkeletonPage breadcrumbs />;
           }
 
-          const mutation = isCreating
-            ? createCustomerMutation
-            : updateCustomerMutation;
+          const customer = (data && data.customer) || undefined;
 
           return (
-            <Mutation
-              mutation={mutation}
-              onCompleted={this.handleMutationCompletion}
+            <FormState
+              onSubmit={() => this.setState({mutating: true})}
+              initialValues={initialValuesFromCustomer(customer)}
             >
-              {(updateOrCreateCustomer, {loading: mutationLoading}) => {
-                const customer = (data && data.customer) || undefined;
+              {({submit, fields, dirty}) => {
                 const title = customer ? customer.displayName : 'New customer';
 
-                return (
-                  <FormState
-                    onSubmit={async ({fields}) => {
-                      await updateOrCreateCustomer({
-                        variables: {
-                          customer: {
-                            id: customer && customer.id,
-                            firstName: fields.firstName.value,
-                            lastName: fields.lastName.value,
-                          },
-                        },
-                      });
-                    }}
-                    initialValues={initialValuesFromCustomer(customer)}
-                  >
-                    {({submit, fields, dirty}) => {
-                      const primaryAction = {
-                        content: 'Save',
-                        onAction: submit,
-                        disabled: !dirty || mutationLoading,
-                        loading: mutationLoading,
-                      };
+                const primaryAction = {
+                  content: 'Save',
+                  onAction: submit,
+                  disabled: !dirty || mutating,
+                  loading: mutating,
+                };
 
-                      return (
-                        <Page
-                          title={title}
-                          breadcrumbs={[
-                            {url: '/customers', content: 'Customers'},
-                          ]}
-                          primaryAction={primaryAction}
-                        >
-                          <Form onSubmit={submit}>
-                            <Card sectioned>
-                              <FormLayout>
-                                <TextField
-                                  id="firstName"
-                                  label="First name"
-                                  {...fields.firstName}
-                                />
-                                <TextField
-                                  id="lastName"
-                                  label="Last name"
-                                  {...fields.lastName}
-                                />
-                              </FormLayout>
-                            </Card>
-                          </Form>
-                        </Page>
-                      );
+                const mutation = isCreating
+                  ? createCustomerMutation
+                  : updateCustomerMutation;
+
+                const mutationMarkup = mutating ? (
+                  <Mutation
+                    mutation={mutation}
+                    onCompleted={this.handleMutationCompletion}
+                    variables={{
+                      customer: {
+                        id: customer && customer.id,
+                        firstName: fields.firstName.value,
+                        lastName: fields.lastName.value,
+                      },
                     }}
-                  </FormState>
+                  />
+                ) : null;
+
+                return (
+                  <>
+                    {mutationMarkup}
+                    <Page
+                      title={title}
+                      breadcrumbs={[{url: '/customers', content: 'Customers'}]}
+                      primaryAction={primaryAction}
+                    >
+                      <Form onSubmit={submit}>
+                        <Card sectioned>
+                          <FormLayout>
+                            <TextField
+                              id="firstName"
+                              label="First name"
+                              {...fields.firstName}
+                            />
+                            <TextField
+                              id="lastName"
+                              label="Last name"
+                              {...fields.lastName}
+                            />
+                          </FormLayout>
+                        </Card>
+                      </Form>
+                    </Page>
+                  </>
                 );
               }}
-            </Mutation>
+            </FormState>
           );
         }}
       </Query>
@@ -143,6 +143,8 @@ export default class CustomerDetails extends React.Component<Props, State> {
   private handleMutationCompletion = ({
     customerCreate,
   }: CreateCustomerMutationData) => {
+    this.setState({mutating: false});
+
     if (
       !this.isCreating ||
       customerCreate == null ||

@@ -1,5 +1,11 @@
 import * as React from 'react';
-import {Query as ApolloQuery, QueryResult, Mutation} from 'react-apollo';
+import {
+  Query as ApolloQuery,
+  Mutation as ApolloMutation,
+  MutationProps as ApolloMutatingProps,
+  MutationUpdaterFn,
+  QueryResult,
+} from 'react-apollo';
 import {
   FetchPolicy,
   ErrorPolicy,
@@ -35,4 +41,36 @@ class QueryTypeClass<
 
 export const Query: typeof QueryTypeClass = ApolloQuery as any;
 
-export {Mutation};
+class MutationRunner extends React.Component<{mutate(): any}> {
+  componentDidMount() {
+    this.props.mutate();
+  }
+
+  render() {
+    return null;
+  }
+}
+
+interface MutationProps<Data = any, Variables = OperationVariables> {
+  client?: ApolloClient<Object>;
+  mutation: DocumentNode<Data, Variables>;
+  ignoreResults?: boolean;
+  optimisticResponse?: Data;
+  variables?: Variables;
+  refetchQueries?: ApolloMutatingProps['refetchQueries'];
+  awaitRefetchQueries?: boolean;
+  update?: MutationUpdaterFn<Data>;
+  onCompleted?: (data: Data) => void;
+  onError?: (error: ApolloError) => void;
+  context?: Record<string, any>;
+}
+
+export function Mutation<Data = any, Variables = any>(
+  props: MutationProps<Data, Variables>,
+) {
+  return (
+    <ApolloMutation {...props}>
+      {(mutate) => <MutationRunner mutate={mutate} />}
+    </ApolloMutation>
+  );
+}
