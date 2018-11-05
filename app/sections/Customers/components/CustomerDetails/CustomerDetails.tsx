@@ -55,7 +55,6 @@ export default class CustomerDetails extends React.Component<Props, State> {
       <Query
         query={customerDetailsQuery}
         variables={{id: composeGid('Customer', id || 'new')}}
-        fetchPolicy="cache-first"
       >
         {({data, loading}) => {
           if (
