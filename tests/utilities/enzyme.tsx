@@ -1,26 +1,53 @@
+import {resolve} from 'path';
+import {readFileSync} from 'fs';
 import * as React from 'react';
-import {mount, MountRendererProps} from 'enzyme';
-import {ErrorBoundary} from '@shopify/react-testing';
-import {createPolarisContext, polarisContextTypes} from '@shopify/polaris';
+import {buildSchema} from 'graphql';
+
+import createGraphQLClientFactory from '@shopify/jest-mock-apollo';
+import {ErrorBoundary, createAppContextMount} from '@shopify/react-testing';
+import {AppProvider} from '@shopify/polaris';
 
 export * from '@shopify/enzyme-utilities';
 
-export function mountWithAppContext(element: React.ReactElement<any>) {
-  return mount(<AppContext>{element}</AppContext>);
+const schema = buildSchema(
+  readFileSync(resolve(__dirname, `../schema.graphql`), 'utf8'),
+);
+
+export const createGraphQLClient = createGraphQLClientFactory({
+  schema,
+});
+
+interface Options {
+  resolveInitialGraphQL?: boolean;
+  graphQLClient?: ReturnType<typeof createGraphQLClient>;
 }
+
+export const mountWithAppContext = createAppContextMount<Options>({
+  context: {
+    graphQLClient({graphQLClient = createGraphQLClient()}) {
+      return graphQLClient;
+    },
+  },
+  render(element) {
+    return <AppContext>{element}</AppContext>;
+  },
+  async afterMount(wrapper, {resolveInitialGraphQL = false}) {
+    if (resolveInitialGraphQL) {
+      await wrapper.graphQLClient.promise();
+    }
+
+    return wrapper;
+  },
+});
 
 interface Props {
   children: React.ReactNode;
 }
 
-class AppContext extends React.Component<Props> {
-  static childContextTypes = {...polarisContextTypes};
-
-  getChildContext() {
-    return createPolarisContext();
-  }
-
-  render() {
-    return <ErrorBoundary>{this.props.children}</ErrorBoundary>;
-  }
+function AppContext({children}: Props) {
+  return (
+    <AppProvider>
+      <ErrorBoundary>{children}</ErrorBoundary>
+    </AppProvider>
+  );
 }

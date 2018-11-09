@@ -238,6 +238,14 @@
     lodash "^4.17.4"
     lodash-decorators "^4.3.5"
 
+"@shopify/jest-mock-apollo@^2.2.3":
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/@shopify/jest-mock-apollo/-/jest-mock-apollo-2.2.3.tgz#223754aea6e2c5e735447141dc2aa04225c7fa3f"
+  integrity sha512-uktWaOOt0j0tXrza8OHhZtsDKFI9q4PIJ7jeA9Qdlu8pm0aKKhJqXkZtMz+TuDqmap+7iQfTqp76U5ywM9iNTA==
+  dependencies:
+    apollo-link "^1.2.3"
+    graphql-tool-utilities "^0.9.0"
+
 "@shopify/koa-shopify-graphql-proxy@^2.1.2":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@shopify/koa-shopify-graphql-proxy/-/koa-shopify-graphql-proxy-2.1.2.tgz#4bd9a09a6afc19e5e98a1f689c70bff16c508338"
@@ -6449,7 +6457,7 @@ graphql-tag@^2.9.1:
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.9.2.tgz#2f60a5a981375f430bf1e6e95992427dc18af686"
   integrity sha512-qnNmof9pAqj/LUzs3lStP0Gw1qhdVCUS7Ab7+SUB6KD5aX1uqxWQRwMnOGTkhKuLvLNIs1TvNz+iS9kUGl1MhA==
 
-graphql-tool-utilities@^0.9.1:
+graphql-tool-utilities@^0.9.0, graphql-tool-utilities@^0.9.1:
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/graphql-tool-utilities/-/graphql-tool-utilities-0.9.1.tgz#2710fb7315b06cf875b5e28a435571c6043a7b2f"
   integrity sha512-cnJ3uodlAZ7DENgbj5r/Aqhvb4vOsCPA+u2oNI173+0fE8ft2xaQEw5htQhoGYjAZKWsBNJ/kZO9hXHNpE9sEw==
