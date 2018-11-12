@@ -8,10 +8,11 @@ function MyComponent() {
 }
 
 describe('<NotFound />', () => {
-  it('throws', () => {
-    const myComponent = withIgnoredReactLogs(() =>
+  it('throws', async () => {
+    const myComponent = await withIgnoredReactLogs(() =>
       mountWithAppContext(<MyComponent />),
     );
+
     expect(myComponent).toHaveThrownErrorDuringRender();
   });
 });

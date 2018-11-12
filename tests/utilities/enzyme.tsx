@@ -1,39 +1,50 @@
 import {resolve} from 'path';
 import {readFileSync} from 'fs';
 import * as React from 'react';
-import {buildSchema} from 'graphql';
 
-import createGraphQLClientFactory from '@shopify/jest-mock-apollo';
+import {buildSchema} from 'graphql';
+import ApolloClient from 'apollo-client';
+import {ApolloProvider} from 'react-apollo';
+import {createFiller} from 'graphql-fixtures';
+
+import createGraphQLFactory from '@shopify/react-apollo/testing';
 import {ErrorBoundary, createAppContextMount} from '@shopify/react-testing';
 import {AppProvider} from '@shopify/polaris';
 
 export * from '@shopify/enzyme-utilities';
 
 const schema = buildSchema(
-  readFileSync(resolve(__dirname, `../schema.graphql`), 'utf8'),
+  readFileSync(resolve(__dirname, `../../graphql/schema.graphql`), 'utf8'),
 );
 
-export const createGraphQLClient = createGraphQLClientFactory({
-  schema,
-});
+export const fillGraphQL = createFiller(schema, {addTypename: true});
+export const createGraphQL = createGraphQLFactory();
 
 interface Options {
   resolveInitialGraphQL?: boolean;
-  graphQLClient?: ReturnType<typeof createGraphQLClient>;
+  graphQL?: ReturnType<typeof createGraphQL>;
 }
 
-export const mountWithAppContext = createAppContextMount<Options>({
-  context: {
-    graphQLClient({graphQLClient = createGraphQLClient()}) {
-      return graphQLClient;
-    },
+interface Context {
+  graphQL: ReturnType<typeof createGraphQL>;
+}
+
+export const mountWithAppContext = createAppContextMount<
+  true,
+  Options,
+  Context
+>({
+  context({graphQL = createGraphQL()}) {
+    return {graphQL};
   },
-  render(element) {
-    return <AppContext>{element}</AppContext>;
+  render(element, {graphQL}) {
+    return <AppContext graphQLClient={graphQL.client}>{element}</AppContext>;
   },
-  async afterMount(wrapper, {resolveInitialGraphQL = false}) {
+  async afterMount(wrapper, {graphQL}, {resolveInitialGraphQL = true}) {
+    graphQL.afterResolve(() => wrapper.update());
+
     if (resolveInitialGraphQL) {
-      await wrapper.graphQLClient.promise();
+      await graphQL.resolveAll();
     }
 
     return wrapper;
@@ -42,12 +53,15 @@ export const mountWithAppContext = createAppContextMount<Options>({
 
 interface Props {
   children: React.ReactNode;
+  graphQLClient: ApolloClient<unknown>;
 }
 
-function AppContext({children}: Props) {
+function AppContext({children, graphQLClient}: Props) {
   return (
     <AppProvider>
-      <ErrorBoundary>{children}</ErrorBoundary>
+      <ApolloProvider client={graphQLClient}>
+        <ErrorBoundary>{children}</ErrorBoundary>
+      </ApolloProvider>
     </AppProvider>
   );
 }

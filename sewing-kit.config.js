@@ -29,6 +29,9 @@ module.exports = function sewingKitConfig(plugins, env) {
       plugins.jest((config) => {
         config.setupFiles.push(path.join(tests, 'setup.ts'));
         config.setupTestFrameworkScriptFile = path.join(tests, 'each-test.ts');
+        config.globals = config.globals || {};
+        config.globals['ts-jest'] = config.globals['ts-jest'] || {};
+        config.globals['ts-jest'].diagnostics = false;
         return config;
       }),
     ],
