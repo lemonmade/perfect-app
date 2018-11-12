@@ -59,9 +59,5 @@
     "jest-enzyme": "^6.0.2",
     "lodash.merge": "^4.6.1",
     "typescript": "^3.0.1"
-  },
-  "resolutions": {
-    "@types/jest": "^21.1.10",
-    "jest": "^21.1.10"
   }
 }

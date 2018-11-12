@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import {Extractable, METHOD_NAME} from '@shopify/react-extract';
+import {Extractable, METHOD_NAME} from '@shopify/react-effect';
 
 import hoistStatics from 'hoist-non-react-statics';
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Extract} from '@shopify/react-extract';
+import {Effect} from '@shopify/react-effect';
 
 import {Consumer} from '../context';
 import {Manager} from '../Manager';
@@ -18,7 +18,11 @@ export default function NetworkComponent({withManager}: Props) {
   return (
     <Consumer>
       {(manager) => (
-        <Extract kind={EXTRACT_ID} extract={() => withManager(manager)} />
+        <Effect
+          serverOnly
+          kind={EXTRACT_ID}
+          perform={() => withManager(manager)}
+        />
       )}
     </Consumer>
   );

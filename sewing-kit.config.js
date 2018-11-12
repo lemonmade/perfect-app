@@ -32,6 +32,7 @@ module.exports = function sewingKitConfig(plugins, env) {
         config.globals = config.globals || {};
         config.globals['ts-jest'] = config.globals['ts-jest'] || {};
         config.globals['ts-jest'].diagnostics = false;
+        config.globals['ts-jest'].isolatedModules = true;
         return config;
       }),
     ],

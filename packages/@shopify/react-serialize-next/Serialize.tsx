@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Extract} from '@shopify/react-extract';
+import {Effect} from '@shopify/react-effect';
 import {Consumer} from './context';
 
 interface Props {
@@ -14,7 +14,11 @@ export default function Serialize({id, data}: Props) {
     <Consumer>
       {(manager) =>
         manager ? (
-          <Extract kind={EXTRACT_ID} extract={() => manager.add(id, data())} />
+          <Effect
+            serverOnly
+            kind={EXTRACT_ID}
+            perform={() => manager.add(id, data())}
+          />
         ) : null
       }
     </Consumer>

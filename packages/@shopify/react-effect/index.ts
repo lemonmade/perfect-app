@@ -1,2 +1,2 @@
-export {default as Extract} from './Extract';
+export {default as Effect} from './Effect';
 export {Extractable, METHOD_NAME} from './extractable';
