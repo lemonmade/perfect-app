@@ -8,8 +8,7 @@ import extract from '@shopify/react-effect/server';
 import {Html, render} from '@shopify/react-html-next/server';
 import {ServerManager, applyToContext} from '@shopify/react-network/server';
 
-import {Manager as SerializationManager} from '@shopify/react-serialize-next';
-import {Manager as I18nManager} from '@shopify/react-i18n-next';
+import {ServerManager as ServerSerializationManager} from '@shopify/react-serialize-next';
 import {State as SewingKitState} from '@shopify/sewing-kit-server';
 
 import App, {createGraphQLClient} from '../app';
@@ -18,10 +17,14 @@ export default async function renderApp(ctx: Context) {
   const {assets} = ctx.state as SewingKitState;
 
   const locale = 'fr';
-  const i18nManager = new I18nManager({locale});
   const networkManager = new ServerManager();
-  const serializationManager = new SerializationManager();
+  const serializationManager = new ServerSerializationManager();
 
+  // We would like to push this one into the App, but for now
+  // it can’t because we don’t serialize until `extract`, at which
+  // point we have a different client than the one that was "filled"
+  // in getDataFromTree(). Moving `getDataFromTree()` would probably
+  // solve this...
   const graphQLClient = createGraphQLClient({
     server: true,
     shop: process.env.SHOP_HOST,
@@ -33,7 +36,6 @@ export default async function renderApp(ctx: Context) {
       server
       locale={locale}
       location={ctx.request.url}
-      i18nManager={i18nManager}
       graphQLClient={graphQLClient}
       networkManager={networkManager}
       serializationManager={serializationManager}

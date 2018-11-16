@@ -18,7 +18,7 @@ export function getAllSerialized<Data = {}>(ids: string[]): Partial<Data> {
   }, {}) as Data;
 }
 
-function getSerializedFromNode<Data>(node: Element): Data | undefined {
+export function getSerializedFromNode<Data>(node: Element): Data | undefined {
   const value = node.textContent;
   return value ? JSON.parse(value) : undefined;
 }

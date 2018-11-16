@@ -3,7 +3,7 @@ import * as React from 'react';
 import ApolloClient from 'apollo-client';
 import {ApolloProvider} from 'react-apollo';
 
-import {Serialize, WithSerializedValue} from '@shopify/react-serialize-next';
+import {createSerializer} from '@shopify/react-serialize-next';
 import {Omit} from '@shopify/useful-types';
 
 import createGraphQLClient, {Options} from './client';
@@ -17,7 +17,9 @@ interface State {
   client: ApolloClient<unknown>;
 }
 
-const SERIALIZE_KEY = 'apollo';
+const {Serialize, WithSerialized} = createSerializer<Options['initialData']>(
+  'apollo',
+);
 
 class GraphQL extends React.Component<Props, State> {
   state: State = {client: this.props.client || createGraphQLClient(this.props)};
@@ -29,7 +31,7 @@ class GraphQL extends React.Component<Props, State> {
     return (
       <>
         <ApolloProvider client={client}>{children}</ApolloProvider>
-        <Serialize id={SERIALIZE_KEY} data={() => client.extract()} />
+        <Serialize data={() => client.extract() as Options['initialData']} />
       </>
     );
   }
@@ -37,10 +39,8 @@ class GraphQL extends React.Component<Props, State> {
 
 export default function ConnectedGraphQL(props: Omit<Props, 'initialData'>) {
   return (
-    <WithSerializedValue id={SERIALIZE_KEY}>
-      {(initialData: Options['initialData']) => (
-        <GraphQL {...props} initialData={initialData} />
-      )}
-    </WithSerializedValue>
+    <WithSerialized>
+      {(initialData) => <GraphQL {...props} initialData={initialData} />}
+    </WithSerialized>
   );
 }

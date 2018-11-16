@@ -2,7 +2,7 @@ import * as React from 'react';
 import Helmet from 'react-helmet';
 import {renderToString} from 'react-dom/server';
 
-import {Manager as SerializationManager} from '@shopify/react-serialize-next';
+import {ServerManager as SerializationManager} from '@shopify/react-serialize-next';
 
 import {Script, Style} from './components';
 

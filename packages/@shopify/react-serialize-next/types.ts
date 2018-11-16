@@ -6,5 +6,6 @@ export interface Serialization {
 }
 
 export interface Manager {
-  add(id: string, data: Data): void;
+  set(id: string, data: Data): void;
+  get<T>(id: string): T | undefined;
 }

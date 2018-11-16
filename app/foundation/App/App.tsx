@@ -6,9 +6,9 @@ import {StaticRouter, BrowserRouter} from 'react-router-dom';
 import {AppProvider} from '@shopify/polaris';
 import {
   Manager as SerializationManager,
+  BrowserManager as BrowserSerializationManager,
   Provider as SerializationProvider,
 } from '@shopify/react-serialize-next';
-import {Manager as I18nManager} from '@shopify/react-i18n-next';
 import {
   Manager as NetworkManager,
   Provider as NetworkProvider,
@@ -20,10 +20,9 @@ import Routes from '../Routes';
 import {ContentSecurityPolicy, GraphQL, I18n} from './components';
 
 interface Props {
+  locale?: string;
   server?: boolean;
   location?: string;
-  locale?: string;
-  i18nManager?: I18nManager;
   graphQLClient?: ApolloClient<unknown>;
   networkManager?: NetworkManager;
   serializationManager?: SerializationManager;
@@ -35,10 +34,9 @@ export default class App extends React.Component<Props> {
     const {
       server,
       location,
-      i18nManager,
       graphQLClient,
       networkManager,
-      serializationManager,
+      serializationManager = new BrowserSerializationManager(),
       locale = 'en',
     } = this.props;
 
@@ -49,7 +47,7 @@ export default class App extends React.Component<Props> {
         <SerializationProvider manager={serializationManager}>
           <ContentSecurityPolicy />
           <GraphQL client={graphQLClient}>
-            <I18n manager={i18nManager} locale={locale}>
+            <I18n locale={locale}>
               <AppProvider linkComponent={Link}>
                 <Router location={location} context={{}}>
                   <Routes />

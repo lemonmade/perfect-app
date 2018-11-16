@@ -1,21 +1,63 @@
 import * as React from 'react';
 import {Data, Serialization, Manager as SerializationManager} from './types';
-import SerializeData from './SerializeData';
+import {getSerializedFromNode, ATTRIBUTE} from './utilities';
+import Serialize from './Serialize';
 
-export default class Manager implements SerializationManager {
-  private serializations: Serialization[] = [];
+export class NoopManager implements SerializationManager {
+  set() {}
+  get<T>(): T | undefined {
+    return undefined;
+  }
+}
 
-  add(id: string, data: Data) {
-    this.serializations.push({id, data});
+export class ServerManager implements SerializationManager {
+  private serializations = new Map<string, Data>();
+
+  set(id: string, data: Data) {
+    this.serializations.set(id, data);
   }
 
-  extract() {
-    return this.serializations;
+  get<T>(id: string): T | undefined {
+    return this.serializations.get(id);
+  }
+
+  extract(): Serialization[] {
+    return [...this.serializations.entries()].map(([id, data]) => ({
+      id,
+      data,
+    }));
   }
 
   toElements() {
-    return this.serializations.map(({id, data}) => (
-      <SerializeData key={id} id={id} data={data} />
+    return this.extract().map(({id, data}) => (
+      <Serialize key={id} id={id} data={data} />
     ));
   }
+}
+
+export class BrowserManager implements SerializationManager {
+  private serializations = createSerializationsMap();
+
+  set() {}
+
+  get<T>(id: string): T | undefined {
+    return this.serializations.get(id);
+  }
+}
+
+function createSerializationsMap() {
+  const serializations = new Map<string, Data>();
+
+  if (typeof document === 'undefined') {
+    return serializations;
+  }
+
+  for (const node of document.querySelectorAll(`[${ATTRIBUTE}]`)) {
+    serializations.set(
+      node.getAttribute(ATTRIBUTE)!,
+      getSerializedFromNode(node),
+    );
+  }
+
+  return serializations;
 }

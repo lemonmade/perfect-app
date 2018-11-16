@@ -1,16 +1,15 @@
 import * as React from 'react';
+import {NoopManager} from './manager';
 import {Manager} from './types';
 
-const {Provider, Consumer} = React.createContext<Manager | undefined>(
-  undefined,
-);
+const {Provider, Consumer} = React.createContext<Manager>(new NoopManager());
 
 interface Props {
   manager?: Manager;
   children: React.ReactNode;
 }
 
-function NetworkManagerProvider({manager, children}: Props) {
+function SerializationManagerProvider({manager, children}: Props) {
   return manager ? (
     <Provider value={manager}>{children}</Provider>
   ) : (
@@ -18,4 +17,4 @@ function NetworkManagerProvider({manager, children}: Props) {
   );
 }
 
-export {NetworkManagerProvider as Provider, Consumer};
+export {SerializationManagerProvider as Provider, Consumer};
