@@ -5,6 +5,7 @@ export default function Home() {
   return (
     <Page title="Home">
       <Link url="/customers">Customers</Link>
+      <Link url="/orphans">Orphans</Link>
     </Page>
   );
 }
