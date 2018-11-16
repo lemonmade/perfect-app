@@ -253,6 +253,11 @@
   dependencies:
     koa-better-http-proxy "^0.2.4"
 
+"@shopify/network@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@shopify/network/-/network-1.0.1.tgz#b315134449dc39cad5e7d29fc7c41b70866edbb2"
+  integrity sha512-MNP9QGtEpB/NIl/eeok+h1hzH+Qf5KUshf2kGrEiW19xjgEjy85gLKCXv2cFjxsZqGtzS3ZOjWCw5L83KnIVLQ==
+
 "@shopify/polaris@^2.6.1":
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/@shopify/polaris/-/polaris-2.6.1.tgz#edfb06ab0c4b62137336e59ed4ee5fc4d3f0bfb2"
@@ -440,6 +445,13 @@
     webpack-plugin-hash-output "npm:webpack-plugin-hash-output-mini-css@3.1.0-beta.4"
     whatwg-url "^6.1.0"
     yargs "^12.0.2"
+
+"@shopify/useful-types@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@shopify/useful-types/-/useful-types-1.0.0.tgz#727c037ac570792572d7fe77e0fde044838e639d"
+  integrity sha512-7jB0kQRdzw4OSpbkYvVG58ttrvvJ0cxHBMlGoOoEUK4rUgxvX8PmCTC2oRT6LIP7mV32SIq70y7gaTPPisJrcA==
+  dependencies:
+    "@types/react" ">=16.4.0"
 
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
@@ -717,6 +729,14 @@
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.2.tgz#f1a9cf1ee85221530def2ac26aee20f910a9dac8"
   integrity sha512-oVcVteCDNiVc/fkDjowRfAZQDEOR76j3CJ3FvwXNvfV6zJguhghy1lMgpAzYox+9AZsWch+JPV6Imml3wvIUeg==
   dependencies:
+    csstype "^2.2.0"
+
+"@types/react@>=16.4.0":
+  version "16.7.6"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.6.tgz#80e4bab0d0731ad3ae51f320c4b08bdca5f03040"
+  integrity sha512-QBUfzftr/8eg/q3ZRgf/GaDP6rTYc7ZNem+g4oZM38C9vXyV8AWRWaTQuW5yCoZTsfHrN7b3DeEiUnqH9SrnpA==
+  dependencies:
+    "@types/prop-types" "*"
     csstype "^2.2.0"
 
 "@types/react@^16.3.14":
