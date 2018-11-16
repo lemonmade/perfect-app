@@ -1,4 +1,9 @@
-import {createStore as createReduxStore, combineReducers, Action} from 'redux';
+import {
+  createStore as createReduxStore,
+  combineReducers,
+  Action,
+  compose,
+} from 'redux';
 
 const SET_NAME = 'SET_NAME';
 
@@ -8,8 +13,20 @@ const reducer = combineReducers({
   },
 });
 
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
+
+const middleware =
+  typeof window === 'undefined'
+    ? undefined
+    : window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__();
+
 export default function createStore(initialData: object = {}) {
-  return createReduxStore(reducer, initialData);
+  return createReduxStore(reducer, initialData, middleware);
 }
 
 export function setName(name: string) {
