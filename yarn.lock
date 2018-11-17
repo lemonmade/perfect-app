@@ -294,6 +294,13 @@
   dependencies:
     hoist-non-react-statics "^3.0.1"
 
+"@shopify/react-effect@^1.0.0", "@shopify/react-effect@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@shopify/react-effect/-/react-effect-1.0.1.tgz#75019b7a445a3e3cce27780b270d5b54139753fa"
+  integrity sha512-dXOmNZpjGRtyC3P6XfiEQCqXQXW1Pr7k8ExZvlwDung+GRqU36QK+VhMb7JYdSGF7DAmimSIJmRukZLuSl7m8w==
+  dependencies:
+    react-tree-walker "^4.3.0"
+
 "@shopify/react-form-state@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@shopify/react-form-state/-/react-form-state-0.5.0.tgz#4610df5685ac6f36882b64e68b2b080541a27028"
@@ -318,16 +325,16 @@
     "@shopify/react-serialize" "^1.0.6"
     react-helmet "^5.2.0"
 
-"@shopify/react-i18n@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@shopify/react-i18n/-/react-i18n-0.2.0.tgz#6e91e7ff376a3146f7ec9137a7c61cc5626a50e6"
-  integrity sha512-R3/X1rRfObi/NsqbLQrreZLlNEuOYX85Co6jTnnJJ6Mf3gvk/f9NBj2Hq2KzB9PootO/RsqYm+ljsjq3rgBbtw==
+"@shopify/react-i18n@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@shopify/react-i18n/-/react-i18n-0.6.0.tgz#f17c7cb8cf5589102a8a97980aa953b87f0263e7"
+  integrity sha512-cy64xzpe6l1kxloY32CmIHXMk3fAFEM6efNhSKr2JScLsAaqVWTBFA7K4dKcpPKQWud1xGakiaumXYaBe5TsuA==
   dependencies:
     "@shopify/i18n" "^0.1.0"
+    "@shopify/react-effect" "^1.0.0"
     "@types/hoist-non-react-statics" "^3.0.1"
     hoist-non-react-statics "^3.0.1"
     prop-types "^15.6.2"
-    react-tree-walker "^4.3.0"
 
 "@shopify/react-serialize@^1.0.6":
   version "1.0.6"

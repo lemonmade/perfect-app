@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {Query} from '@shopify/react-apollo';
-import {withI18n, WithI18nProps} from '@shopify/react-i18n-next';
+import {withI18n, WithI18nProps} from '@shopify/react-i18n';
 import compose from '@shopify/react-compose';
 import {Page, Card, ResourceList, Avatar} from '@shopify/polaris';
 import {parseGid, nodesFromEdges} from '@shopify/admin-graphql-api-utilities';

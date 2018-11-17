@@ -4,7 +4,7 @@ import * as React from 'react';
 import {Context} from 'koa';
 import {getDataFromTree} from 'react-apollo';
 
-import extract from '@shopify/react-effect/server';
+import {extract} from '@shopify/react-effect/server';
 import {Html, render} from '@shopify/react-html-next/server';
 import {ServerManager, applyToContext} from '@shopify/react-network/server';
 

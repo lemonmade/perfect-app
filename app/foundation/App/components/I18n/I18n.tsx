@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {createSerializer} from '@shopify/react-serialize-next';
-import {Provider, Manager} from '@shopify/react-i18n-next';
+import {Provider, Manager} from '@shopify/react-i18n';
 
 interface Props {
   locale: string;
