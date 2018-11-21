@@ -16,7 +16,7 @@ import App, {createGraphQLClient} from '../app';
 export default async function renderApp(ctx: Context) {
   const {assets} = ctx.state as SewingKitState;
 
-  const locale = 'fr';
+  const locale = 'en';
   const networkManager = new ServerManager();
   const serializationManager = new ServerSerializationManager();
 
