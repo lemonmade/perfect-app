@@ -5,10 +5,9 @@ import {StaticRouter, BrowserRouter} from 'react-router-dom';
 
 import {AppProvider} from '@shopify/polaris';
 import {
-  Manager as SerializationManager,
-  BrowserManager as BrowserSerializationManager,
-  Provider as SerializationProvider,
-} from '@shopify/react-serialize-next';
+  Manager as HtmlManager,
+  Provider as HtmlProvider,
+} from '@shopify/react-html';
 import {
   Manager as NetworkManager,
   Provider as NetworkProvider,
@@ -25,7 +24,7 @@ interface Props {
   location?: string;
   graphQLClient?: ApolloClient<unknown>;
   networkManager?: NetworkManager;
-  serializationManager?: SerializationManager;
+  htmlManager?: HtmlManager;
 }
 
 // eslint-disable-next-line react/prefer-stateless-function
@@ -36,7 +35,7 @@ export default class App extends React.Component<Props> {
       location,
       graphQLClient,
       networkManager,
-      serializationManager = new BrowserSerializationManager(),
+      htmlManager = new HtmlManager(),
       locale = 'en',
     } = this.props;
 
@@ -44,7 +43,7 @@ export default class App extends React.Component<Props> {
 
     return (
       <NetworkProvider manager={networkManager}>
-        <SerializationProvider manager={serializationManager}>
+        <HtmlProvider manager={htmlManager}>
           <ContentSecurityPolicy />
           <GraphQL client={graphQLClient}>
             <I18n locale={locale}>
@@ -55,7 +54,7 @@ export default class App extends React.Component<Props> {
               </AppProvider>
             </I18n>
           </GraphQL>
-        </SerializationProvider>
+        </HtmlProvider>
       </NetworkProvider>
     );
   }

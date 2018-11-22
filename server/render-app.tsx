@@ -5,10 +5,9 @@ import {Context} from 'koa';
 import {getDataFromTree} from 'react-apollo';
 
 import {extract} from '@shopify/react-effect/server';
-import {Html, render} from '@shopify/react-html-next/server';
+import {Html, Manager as HtmlManager, render} from '@shopify/react-html/server';
 import {ServerManager, applyToContext} from '@shopify/react-network/server';
 
-import {ServerManager as ServerSerializationManager} from '@shopify/react-serialize-next';
 import {State as SewingKitState} from '@shopify/sewing-kit-server';
 
 import App, {createGraphQLClient} from '../app';
@@ -16,9 +15,9 @@ import App, {createGraphQLClient} from '../app';
 export default async function renderApp(ctx: Context) {
   const {assets} = ctx.state as SewingKitState;
 
-  const locale = 'en';
+  const locale = 'fr';
   const networkManager = new ServerManager();
-  const serializationManager = new ServerSerializationManager();
+  const htmlManager = new HtmlManager();
 
   // We would like to push this one into the App, but for now
   // it can’t because we don’t serialize until `extract`, at which
@@ -37,8 +36,8 @@ export default async function renderApp(ctx: Context) {
       locale={locale}
       location={ctx.request.url}
       graphQLClient={graphQLClient}
+      htmlManager={htmlManager}
       networkManager={networkManager}
-      serializationManager={serializationManager}
     />
   );
 
@@ -50,10 +49,9 @@ export default async function renderApp(ctx: Context) {
   ctx.body = render(
     <Html
       locale={locale}
+      manager={htmlManager}
       styles={await assets.styles()}
       scripts={await assets.scripts()}
-      serializationManager={serializationManager}
-      hideForInitialLoad={Boolean(process.env.NODE_ENV === 'development')}
     >
       {app}
     </Html>,

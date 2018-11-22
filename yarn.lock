@@ -260,10 +260,10 @@
   dependencies:
     koa-better-http-proxy "^0.2.4"
 
-"@shopify/network@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@shopify/network/-/network-1.0.1.tgz#b315134449dc39cad5e7d29fc7c41b70866edbb2"
-  integrity sha512-MNP9QGtEpB/NIl/eeok+h1hzH+Qf5KUshf2kGrEiW19xjgEjy85gLKCXv2cFjxsZqGtzS3ZOjWCw5L83KnIVLQ==
+"@shopify/network@^1.0.2":
+  version "1.0.2"
+  resolved "https://packages.shopify.io/shopify/node/npm/@shopify/network/-/network-1.0.2.tgz#ef96a3d85f74d1d7d6e3d036b727049489ca0d81"
+  integrity sha1-75aj2F900dfW49A2tycElInKDYE=
 
 "@shopify/polaris@^2.6.1":
   version "2.6.1"
@@ -309,14 +309,6 @@
     lodash "^4.17.10"
     lodash-decorators "^6.0.0"
 
-"@shopify/react-html@^3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@shopify/react-html/-/react-html-3.0.2.tgz#8d9f08b59f5c9a29b2ade9d009d3ba903bd02cae"
-  integrity sha512-P6Y2rOaP+QKHZzJ0iJjTofhUW6/ZpRl+J9FCljPlJpDWclbTeXfwxIrrKb5iY293W7pSh/BvlJcUtRpADbrztA==
-  dependencies:
-    "@shopify/react-serialize" "^1.0.6"
-    react-helmet "^5.2.0"
-
 "@shopify/react-html@^3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@shopify/react-html/-/react-html-3.0.3.tgz#247773a23bdfa46769ac74112c09c4c2bd6785d8"
@@ -325,16 +317,40 @@
     "@shopify/react-serialize" "^1.0.6"
     react-helmet "^5.2.0"
 
-"@shopify/react-i18n@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@shopify/react-i18n/-/react-i18n-0.6.0.tgz#f17c7cb8cf5589102a8a97980aa953b87f0263e7"
-  integrity sha512-cy64xzpe6l1kxloY32CmIHXMk3fAFEM6efNhSKr2JScLsAaqVWTBFA7K4dKcpPKQWud1xGakiaumXYaBe5TsuA==
+"@shopify/react-html@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/@shopify/react-html/-/react-html-5.0.1.tgz#21f3cbaad531ca91b03337d2a4b84e4cbc2fa2f5"
+  integrity sha512-hM7VTpUFEQZ6QMHB+TQRUtc6iZhjIhZQGUzaM1tl6c9hPwMUGacCSBvqo5FPU+O5qihLvZHoi24ELh2DdTs+2g==
+  dependencies:
+    "@shopify/react-serialize" "^1.0.10"
+    react-helmet "^5.2.0"
+
+"@shopify/react-i18n@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@shopify/react-i18n/-/react-i18n-0.6.1.tgz#a7f08a52a513f79b902970bca6f398350410b1a0"
+  integrity sha512-WL40ZevJ5U82nJuRO0Ojr+I2OSmCbyXm3y8NNeLTjPUvcjnLyxprC3qfJk2KyW/3lVayxlFt4tcNpVSd3F66Qw==
   dependencies:
     "@shopify/i18n" "^0.1.0"
     "@shopify/react-effect" "^1.0.0"
     "@types/hoist-non-react-statics" "^3.0.1"
     hoist-non-react-statics "^3.0.1"
     prop-types "^15.6.2"
+
+"@shopify/react-network@^1.0.1":
+  version "1.0.1"
+  resolved "https://packages.shopify.io/shopify/node/npm/@shopify/react-network/-/react-network-1.0.1.tgz#87f03d2ca6c0b82778081cb6ba669a5b3fb53101"
+  integrity sha1-h/A9LKbAuCd4CBy2umaaWz+1MQE=
+  dependencies:
+    "@shopify/network" "^1.0.2"
+    "@shopify/react-effect" "^1.0.0"
+    "@types/koa" "^2.0.46"
+
+"@shopify/react-serialize@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@shopify/react-serialize/-/react-serialize-1.0.10.tgz#eec242f1bae7508f9a5fa3102e20f29df893d1bc"
+  integrity sha512-6y72NuqZ4Wq+VLOkpNHI+0jzD19WBrDliqyMSs1gFhPvMSI4nKyocp9DXKKBd9lQq93NcVXQ+mP8NkS8wh72NA==
+  dependencies:
+    serialize-javascript "^1.5.0"
 
 "@shopify/react-serialize@^1.0.6":
   version "1.0.6"

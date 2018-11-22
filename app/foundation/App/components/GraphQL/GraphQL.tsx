@@ -3,7 +3,7 @@ import * as React from 'react';
 import ApolloClient from 'apollo-client';
 import {ApolloProvider} from 'react-apollo';
 
-import {createSerializer} from '@shopify/react-serialize-next';
+import {createSerializer} from '@shopify/react-html';
 import {Omit} from '@shopify/useful-types';
 
 import createGraphQLClient, {Options} from './client';

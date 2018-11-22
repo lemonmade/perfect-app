@@ -11,13 +11,4 @@ if (module.hot) {
   });
 }
 
-// undo display:none in development (used to avoid flash of unstyled content).
-// eslint-disable-next-line no-process-env
-if (process.env.NODE_ENV === 'development') {
-  setTimeout(() => {
-    document.body.style.display = '';
-    renderApp(appContainer, App);
-  }, 0);
-} else {
-  renderApp(appContainer, App);
-}
+renderApp(appContainer, App);

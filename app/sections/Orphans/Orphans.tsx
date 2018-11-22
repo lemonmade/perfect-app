@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Effect} from '@shopify/react-effect';
-import {createSerializer} from '@shopify/react-serialize-next';
+import {createSerializer} from '@shopify/react-html';
+
 import {Store} from 'redux';
 import {Provider, connect} from 'react-redux';
 

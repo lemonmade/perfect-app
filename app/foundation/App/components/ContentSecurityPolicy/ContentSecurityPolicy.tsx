@@ -1,21 +1,21 @@
 import * as React from 'react';
 import {
-  DefaultSrc,
-  StyleSrc,
-  ImageSrc,
+  DefaultSource,
+  StyleSource,
+  ImageSource,
   SpecialSource,
 } from '@shopify/react-network';
 
 export default function ContentSecurityPolicy() {
   return (
     <>
-      <DefaultSrc
+      <DefaultSource
         sources={[SpecialSource.Self, 'localhost:8080', 'https://*']}
       />
-      <ImageSrc
+      <ImageSource
         sources={[SpecialSource.Self, 'localhost:8080', SpecialSource.Data]}
       />
-      <StyleSrc sources={[SpecialSource.UnsafeInline]} />
+      <StyleSource sources={[SpecialSource.UnsafeInline]} />
     </>
   );
 }
