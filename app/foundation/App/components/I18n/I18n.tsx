@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {createSerializer} from '@shopify/react-serialize-next';
-import {Provider, Manager} from '@shopify/react-i18n';
+import {Provider, Manager} from '@shopify/react-i18n-next';
 
 interface Props {
   locale: string;
@@ -21,7 +21,10 @@ export default function I18n({locale: explicitLocale, children}: Props) {
       {(serialized) => {
         const locale = serialized ? serialized.locale : explicitLocale;
         const translations = serialized && serialized.translations;
-        const manager = new Manager({locale}, translations);
+        const manager = new Manager(
+          {locale, fallbackLocale: 'en'},
+          translations,
+        );
 
         return (
           <>

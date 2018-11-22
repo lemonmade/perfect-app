@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {withI18n, WithI18nProps} from '@shopify/react-i18n';
+import {withI18n, WithI18nProps} from '@shopify/react-i18n-next';
 import compose from '@shopify/react-compose';
 import {Page, EmptyState} from '@shopify/polaris';
 import {Status, StatusCode} from '@shopify/react-network';
@@ -32,7 +32,9 @@ export default compose<{}>(
       if (locale === 'fr') {
         const language = await import('./translations/fr.json');
         return language.default;
-        // return require('./translations/fr.json');
+      } else if (locale === 'en') {
+        const language = await import('./translations/en.json');
+        return language.default;
       }
     },
     fallback: en,
