@@ -26,10 +26,7 @@ export default function Orphans() {
         return (
           <Provider store={store}>
             <>
-              <Effect
-                serverOnly
-                perform={() => store.dispatch(setName('Chris'))}
-              />
+              <Effect perform={() => store.dispatch(setName('Chris'))} />
               <ReduxUser />
               <Serialize data={() => store.getState()} />
             </>

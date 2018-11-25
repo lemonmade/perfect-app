@@ -86,23 +86,30 @@ export default class CustomerDetails extends React.Component<Props, State> {
                   loading: mutating,
                 };
 
-                const mutation = isCreating
-                  ? createCustomerMutation
-                  : updateCustomerMutation;
+                let mutationMarkup: React.ReactNode = null;
 
-                const mutationMarkup = mutating ? (
-                  <Mutation
-                    mutation={mutation}
-                    onCompleted={this.handleMutationCompletion}
-                    variables={{
-                      customer: {
-                        id: customer && customer.id,
-                        firstName: fields.firstName.value,
-                        lastName: fields.lastName.value,
-                      },
-                    }}
-                  />
-                ) : null;
+                if (mutating) {
+                  const variables = {
+                    customer: {
+                      id: customer && customer.id,
+                      firstName: fields.firstName.value,
+                      lastName: fields.lastName.value,
+                    },
+                  };
+
+                  mutationMarkup = isCreating ? (
+                    <Mutation
+                      mutation={createCustomerMutation}
+                      onCompleted={this.handleCustomerCreation}
+                      variables={variables}
+                    />
+                  ) : (
+                    <Mutation
+                      mutation={updateCustomerMutation}
+                      variables={variables}
+                    />
+                  );
+                }
 
                 return (
                   <>
@@ -139,7 +146,7 @@ export default class CustomerDetails extends React.Component<Props, State> {
     );
   }
 
-  private handleMutationCompletion = ({
+  private handleCustomerCreation = ({
     customerCreate,
   }: CreateCustomerMutationData) => {
     this.setState({mutating: false});

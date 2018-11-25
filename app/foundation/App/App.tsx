@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {hot} from 'react-hot-loader';
 
 import ApolloClient from 'apollo-client';
 import {StaticRouter, BrowserRouter} from 'react-router-dom';
@@ -28,7 +29,7 @@ interface Props {
 }
 
 // eslint-disable-next-line react/prefer-stateless-function
-export default class App extends React.Component<Props> {
+class App extends React.Component<Props> {
   render() {
     const {
       server,
@@ -59,3 +60,5 @@ export default class App extends React.Component<Props> {
     );
   }
 }
+
+export default hot(module)(App);

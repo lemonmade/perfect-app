@@ -1,6 +1,7 @@
 import ApolloClient from 'apollo-client';
 import {createHttpLink} from 'apollo-link-http';
 import {InMemoryCache, NormalizedCacheObject} from 'apollo-cache-inmemory';
+import {Header} from '@shopify/react-network';
 
 export interface Options {
   shop?: string;
@@ -20,8 +21,8 @@ export default function createGraphQLClient({
   });
 
   const headers = {
-    accept: 'application/json',
-    'content-type': 'application/json',
+    [Header.Accept.toLowerCase()]: 'application/json',
+    [Header.ContentType.toLowerCase()]: 'application/json',
   };
 
   if (accessToken) {

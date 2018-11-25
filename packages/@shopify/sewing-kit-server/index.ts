@@ -1,4 +1,5 @@
 import {Context} from 'koa';
+import {Header} from '@shopify/network';
 import Assets, {Asset} from './assets';
 
 export {Assets, Asset};
@@ -16,7 +17,7 @@ export function middleware({cdn}: Options) {
     ctx: Context,
     next: () => Promise<any>,
   ) {
-    ctx.state.assets = new Assets(cdn);
+    ctx.state.assets = new Assets({cdn, userAgent: ctx.get(Header.UserAgent)});
     await next();
   };
 }

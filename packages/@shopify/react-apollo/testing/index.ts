@@ -35,7 +35,7 @@ class GraphQL {
 
   private requests = new Set<Request>();
   private incompleteRequests = new Set<Request>();
-  private afterResolver: () => void | undefined;
+  private afterResolver: (() => void) | undefined;
 
   constructor(
     mock: GraphQLMock,

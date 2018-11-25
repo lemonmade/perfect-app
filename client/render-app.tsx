@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {AppContainer} from 'react-hot-loader';
 import {showPage} from '@shopify/react-html';
 
 export default function renderApp(
@@ -8,13 +7,7 @@ export default function renderApp(
   App: React.ComponentType,
 ) {
   if (appContainerElement) {
-    ReactDOM.hydrate(
-      <AppContainer>
-        <App />
-      </AppContainer>,
-      appContainerElement,
-    );
-
+    ReactDOM.hydrate(<App />, appContainerElement);
     showPage();
   }
 }

@@ -1,5 +1,6 @@
-import {readJSON} from 'fs-extra';
 import {resolve} from 'path';
+import {readJSON} from 'fs-extra';
+import {matchesUA} from 'browserslist-useragent';
 
 export interface Asset {
   path: string;
@@ -11,24 +12,87 @@ interface Entrypoint {
   css: Asset[];
 }
 
-interface BundleDependency {
-  file: string;
-  publicPath: string;
-  chunkName: string;
-  id?: string;
-  name?: string;
-}
-
-interface Manifest {
+interface AssetList {
   entrypoints: {[key: string]: Entrypoint};
 }
 
-interface AsyncAssestManifest {
-  [key: string]: BundleDependency[];
+interface TargetManifest {
+  name: string;
+  browsers?: string | string[];
+  assets: AssetList;
 }
 
-let manifestPromise: Promise<Manifest> | null = null;
-let asyncAssetsManifestPromise: Promise<AsyncAssestManifest> | null = null;
+type ConsolidatedManifest = TargetManifest[];
+
+interface Options {
+  cdn: string;
+  userAgent?: string;
+}
+
+export default class Assets {
+  private cdn: string;
+  private userAgent?: string;
+  private resolvedAssetList?: AssetList;
+
+  constructor({cdn, userAgent}: Options) {
+    this.cdn = cdn;
+    this.userAgent = userAgent;
+  }
+
+  async scripts({name = 'main'} = {}) {
+    const {js} = getAssetsForEntrypoint(name, await this.getAssetList());
+
+    const scripts =
+      // eslint-disable-next-line no-process-env
+      process.env.NODE_ENV === 'development'
+        ? [{path: `${this.cdn}dll/vendor.js`}, ...js]
+        : js;
+
+    return scripts;
+  }
+
+  async styles({name = 'main'} = {}) {
+    const {css} = getAssetsForEntrypoint(name, await this.getAssetList());
+    return css;
+  }
+
+  private async getAssetList() {
+    if (this.resolvedAssetList) {
+      return this.resolvedAssetList;
+    }
+
+    const manifest = await loadManifest();
+
+    if (manifest.length === 0) {
+      throw new Error('No builds were found.');
+    }
+
+    const {userAgent} = this;
+
+    if (userAgent == null) {
+      this.resolvedAssetList = manifest[manifest.length - 1].assets;
+    } else if (manifest.length === 1) {
+      this.resolvedAssetList = manifest[0].assets;
+    } else {
+      this.resolvedAssetList = (
+        manifest.find(
+          ({browsers}) =>
+            browsers == null ||
+            matchesUA(userAgent, {
+              browsers,
+              ignoreMinor: true,
+              ignorePatch: true,
+              allowHigherVersions: true,
+            }),
+        ) || manifest[0]
+      ).assets;
+    }
+
+    return this.resolvedAssetList;
+  }
+}
+
+let manifestPromise: Promise<ConsolidatedManifest> | null = null;
 
 function loadManifest() {
   if (manifestPromise) {
@@ -42,25 +106,11 @@ function loadManifest() {
   return manifestPromise;
 }
 
-function loadAsyncAssetsManifest() {
-  if (asyncAssetsManifestPromise) {
-    return asyncAssetsManifestPromise;
-  }
-
-  asyncAssetsManifestPromise = readJSON(
-    resolve(__dirname, '../../../build/client/react-loadable.json'),
-  );
-
-  return asyncAssetsManifestPromise;
-}
-
 export function clearCache() {
   manifestPromise = null;
-  asyncAssetsManifestPromise = null;
 }
 
-async function getAssetsForEntrypoint(name: string) {
-  const {entrypoints} = await loadManifest();
+function getAssetsForEntrypoint(name: string, {entrypoints}: AssetList) {
   if (!entrypoints.hasOwnProperty(name)) {
     throw new Error(
       `No entrypoints found with the name '${name}'. Available entrypoints: ${Object.keys(
@@ -70,42 +120,4 @@ async function getAssetsForEntrypoint(name: string) {
   }
 
   return entrypoints[name];
-}
-
-export default class Assets {
-  private seenAssets = new Set<string>();
-
-  constructor(private cdn: string) {}
-
-  async scripts({name = 'main'} = {}) {
-    const {js} = await getAssetsForEntrypoint(name);
-
-    const scripts =
-      process.env.NODE_ENV === 'development'
-        ? [{path: `${this.cdn}dll/vendor.js`}, ...js]
-        : js;
-
-    return this.getUnseenAssets(scripts);
-  }
-
-  async styles({name = 'main'} = {}) {
-    const {css} = await getAssetsForEntrypoint(name);
-    return this.getUnseenAssets(css);
-  }
-
-  async getAsyncAssetsManifest() {
-    const manifest = await loadAsyncAssetsManifest();
-    return manifest;
-  }
-
-  private getUnseenAssets(assets: Asset[]) {
-    const {seenAssets} = this;
-    const unseenAssets = assets.filter((asset) => !seenAssets.has(asset.path));
-
-    for (const asset of unseenAssets) {
-      seenAssets.add(asset.path);
-    }
-
-    return unseenAssets;
-  }
 }
