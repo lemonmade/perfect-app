@@ -5,7 +5,7 @@ import {Context} from 'koa';
 import {getDataFromTree} from 'react-apollo';
 
 import {extract} from '@shopify/react-effect/server';
-import {Html, Manager as HtmlManager, render} from '@shopify/react-html/server';
+import {Html, Manager as HtmlManager, render} from '@shopify/react-html-next/server';
 import {ServerManager, applyToContext} from '@shopify/react-network/server';
 
 import {State as SewingKitState} from '@shopify/sewing-kit-server';

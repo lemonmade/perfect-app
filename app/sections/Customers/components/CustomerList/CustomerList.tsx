@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import {Query} from '@shopify/react-apollo';
 import {withI18n, WithI18nProps} from '@shopify/react-i18n';
+import {Title} from '@shopify/react-html-next';
 import compose from '@shopify/react-compose';
 import {Page, Card, ResourceList, Avatar} from '@shopify/polaris';
 import {parseGid, nodesFromEdges} from '@shopify/admin-graphql-api-utilities';
@@ -23,44 +24,48 @@ class CustomerList extends React.PureComponent<WithI18nProps, State> {
     const {i18n} = this.props;
 
     return (
-      <Page
-        title={i18n.translate('title')}
-        primaryAction={{
-          content: i18n.translate('primaryAction'),
-          url: '/customers/new',
-        }}
-      >
-        <Query query={customerListQuery}>
-          {({data}) => {
-            const customers =
-              data && data.customers
-                ? nodesFromEdges(data.customers.edges)
-                : [];
-
-            return (
-              <Card>
-                <ResourceList
-                  items={customers}
-                  selectedItems={this.state.selectedCustomers}
-                  bulkActions={[{content: 'Delete', onAction: () => {}}]}
-                  onSelectionChange={(selectedCustomers) =>
-                    this.setState({selectedCustomers})
-                  }
-                  renderItem={(customer) => (
-                    <ResourceList.Item
-                      id={`Customer${parseGid(customer.id)}`}
-                      url={urlForCustomer(customer)}
-                      media={<Avatar customer />}
-                    >
-                      {customer.displayName}
-                    </ResourceList.Item>
-                  )}
-                />
-              </Card>
-            );
+      <>
+        <Title>{i18n.translate('title')}</Title>
+        <Page
+          title={i18n.translate('title')}
+          breadcrumbs={[{content: 'Home', url: '/'}]}
+          primaryAction={{
+            content: i18n.translate('primaryAction'),
+            url: '/customers/new',
           }}
-        </Query>
-      </Page>
+        >
+          <Query query={customerListQuery}>
+            {({data}) => {
+              const customers =
+                data && data.customers
+                  ? nodesFromEdges(data.customers.edges)
+                  : [];
+
+              return (
+                <Card>
+                  <ResourceList
+                    items={customers}
+                    selectedItems={this.state.selectedCustomers}
+                    bulkActions={[{content: 'Delete', onAction: () => {}}]}
+                    onSelectionChange={(selectedCustomers) =>
+                      this.setState({selectedCustomers})
+                    }
+                    renderItem={(customer) => (
+                      <ResourceList.Item
+                        id={`Customer${parseGid(customer.id)}`}
+                        url={urlForCustomer(customer)}
+                        media={<Avatar customer />}
+                      >
+                        {customer.displayName}
+                      </ResourceList.Item>
+                    )}
+                  />
+                </Card>
+              );
+            }}
+          </Query>
+        </Page>
+      </>
     );
   }
 }

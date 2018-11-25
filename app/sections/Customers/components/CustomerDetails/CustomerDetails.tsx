@@ -11,6 +11,7 @@ import {
   TextField,
 } from '@shopify/polaris';
 import FormState from '@shopify/react-form-state';
+import {Title} from '@shopify/react-html-next';
 import {composeGid, parseGid} from '@shopify/admin-graphql-api-utilities';
 
 import {NotFound} from 'components';
@@ -66,7 +67,12 @@ export default class CustomerDetails extends React.Component<Props, State> {
           }
 
           if (!isCreating && (data == null || data.customer == null)) {
-            return <SkeletonPage breadcrumbs />;
+            return (
+              <>
+                <Title>Customer</Title>
+                <SkeletonPage breadcrumbs />
+              </>
+            );
           }
 
           const customer = (data && data.customer) || undefined;
@@ -113,6 +119,7 @@ export default class CustomerDetails extends React.Component<Props, State> {
 
                 return (
                   <>
+                    <Title>{title}</Title>
                     {mutationMarkup}
                     <Page
                       title={title}

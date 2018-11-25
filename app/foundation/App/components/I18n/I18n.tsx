@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {createSerializer} from '@shopify/react-html';
+import {createSerializer} from '@shopify/react-html-next';
 import {Provider, Manager} from '@shopify/react-i18n';
 
 interface Props {

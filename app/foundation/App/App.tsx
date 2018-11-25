@@ -2,13 +2,15 @@ import * as React from 'react';
 import {hot} from 'react-hot-loader';
 
 import ApolloClient from 'apollo-client';
+
 import {StaticRouter, BrowserRouter} from 'react-router-dom';
 
 import {AppProvider} from '@shopify/polaris';
 import {
+  Title,
   Manager as HtmlManager,
   Provider as HtmlProvider,
-} from '@shopify/react-html';
+} from '@shopify/react-html-next';
 import {
   Manager as NetworkManager,
   Provider as NetworkProvider,
@@ -46,6 +48,7 @@ class App extends React.Component<Props> {
       <NetworkProvider manager={networkManager}>
         <HtmlProvider manager={htmlManager}>
           <ContentSecurityPolicy />
+          <Title>Shopify App</Title>
           <GraphQL client={graphQLClient}>
             <I18n locale={locale}>
               <AppProvider linkComponent={Link}>

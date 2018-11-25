@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {showPage} from '@shopify/react-html';
+import {showPage} from '@shopify/react-html-next';
 
 export default function renderApp(
   appContainerElement: HTMLElement | null,
