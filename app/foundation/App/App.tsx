@@ -7,7 +7,6 @@ import {StaticRouter, BrowserRouter} from 'react-router-dom';
 
 import {AppProvider} from '@shopify/polaris';
 import {
-  Title,
   Manager as HtmlManager,
   Provider as HtmlProvider,
 } from '@shopify/react-html-next';
@@ -19,7 +18,7 @@ import {
 import Link from '../Link';
 import Routes from '../Routes';
 
-import {ContentSecurityPolicy, GraphQL, I18n} from './components';
+import {ContentSecurityPolicy, Metadata, GraphQL, I18n} from './components';
 
 interface Props {
   locale?: string;
@@ -48,7 +47,7 @@ class App extends React.Component<Props> {
       <NetworkProvider manager={networkManager}>
         <HtmlProvider manager={htmlManager}>
           <ContentSecurityPolicy />
-          <Title>Shopify App</Title>
+          <Metadata />
           <GraphQL client={graphQLClient}>
             <I18n locale={locale}>
               <AppProvider linkComponent={Link}>

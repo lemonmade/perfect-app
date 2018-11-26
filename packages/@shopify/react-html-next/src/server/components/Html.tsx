@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Helmet from 'react-helmet';
 import {renderToString} from 'react-dom/server';
 
 import {Script, Style} from '../../components';
@@ -34,10 +33,6 @@ export default function Html({
   bodyMarkup = null,
 }: Props) {
   const markup = renderToString(children);
-  const helmet = Helmet.renderStatic();
-
-  const htmlAttributes = helmet.htmlAttributes.toComponent();
-  const bodyAttributes = helmet.bodyAttributes.toComponent();
 
   const extracted = manager && manager.extract();
 
@@ -48,6 +43,17 @@ export default function Html({
     : null;
 
   const titleMarkup = extracted ? <title>{extracted.title}</title> : null;
+  const metaMarkup = extracted
+    ? extracted.meta.map((metaProps, index) => (
+        <meta key={index} {...metaProps} />
+      ))
+    : null;
+
+  const linkMarkup = extracted
+    ? extracted.links.map((linkProps, index) => (
+        <link key={index} {...linkProps} />
+      ))
+    : null;
 
   const stylesMarkup = styles.map((style) => {
     return (
@@ -88,19 +94,18 @@ export default function Html({
     process.env.NODE_ENV === 'development' ? {display: 'none'} : undefined;
 
   return (
-    <html lang={locale} {...htmlAttributes}>
+    <html lang={locale}>
       <head>
         {titleMarkup}
-        {helmet.meta.toComponent()}
-        {helmet.script.toComponent()}
-        {helmet.link.toComponent()}
+        {metaMarkup}
+        {linkMarkup}
 
         {stylesMarkup}
         {headMarkup}
         {blockingScriptsMarkup}
       </head>
 
-      <body {...bodyAttributes} style={bodyStyles}>
+      <body style={bodyStyles}>
         <div id="app" dangerouslySetInnerHTML={{__html: markup}} />
 
         {bodyMarkup}

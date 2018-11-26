@@ -6,6 +6,7 @@ interface Title {
 
 export interface State {
   title?: string;
+  meta: React.HTMLProps<HTMLMetaElement>[];
 }
 
 interface Subscription {
@@ -16,6 +17,8 @@ export default class Manager {
   private isServer = typeof document === 'undefined';
   private serializations = getSerializationsFromDocument();
   private titles: Title[] = [];
+  private metas: React.HTMLProps<HTMLMetaElement>[] = [];
+  private links: React.HTMLProps<HTMLLinkElement>[] = [];
   private subscriptions = new Set<Subscription>();
 
   get state() {
@@ -23,6 +26,8 @@ export default class Manager {
 
     return {
       title: lastTitle && lastTitle.title,
+      meta: this.metas,
+      links: this.links,
     };
   }
 
@@ -35,6 +40,18 @@ export default class Manager {
     this.titles.push(titleObject);
     this.updateSubscriptions();
     return this.removeTitle.bind(this, titleObject);
+  }
+
+  addMeta(meta: React.HTMLProps<HTMLMetaElement>) {
+    this.metas.push(meta);
+    this.updateSubscriptions();
+    return this.removeMeta.bind(this, meta);
+  }
+
+  addLink(link: React.HTMLProps<HTMLLinkElement>) {
+    this.links.push(link);
+    this.updateSubscriptions();
+    return this.removeLink.bind(this, link);
   }
 
   setSerialization(id: string, data: unknown) {
@@ -67,6 +84,22 @@ export default class Manager {
     const index = this.titles.indexOf(title);
     if (index >= 0) {
       this.titles.splice(index, 1);
+      this.updateSubscriptions();
+    }
+  }
+
+  private removeMeta(meta: React.HTMLProps<HTMLMetaElement>) {
+    const index = this.metas.indexOf(meta);
+    if (index >= 0) {
+      this.metas.splice(index, 1);
+      this.updateSubscriptions();
+    }
+  }
+
+  private removeLink(link: React.HTMLProps<HTMLLinkElement>) {
+    const index = this.links.indexOf(link);
+    if (index >= 0) {
+      this.links.splice(index, 1);
       this.updateSubscriptions();
     }
   }
