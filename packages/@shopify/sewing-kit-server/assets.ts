@@ -19,7 +19,7 @@ interface AssetList {
 interface TargetManifest {
   name: string;
   browsers?: string | string[];
-  assets: AssetList;
+  manifest: AssetList;
 }
 
 type ConsolidatedManifest = TargetManifest[];
@@ -70,9 +70,9 @@ export default class Assets {
     const {userAgent} = this;
 
     if (userAgent == null) {
-      this.resolvedAssetList = manifest[manifest.length - 1].assets;
+      this.resolvedAssetList = manifest[manifest.length - 1].manifest;
     } else if (manifest.length === 1) {
-      this.resolvedAssetList = manifest[0].assets;
+      this.resolvedAssetList = manifest[0].manifest;
     } else {
       this.resolvedAssetList = (
         manifest.find(
@@ -85,7 +85,7 @@ export default class Assets {
               allowHigherVersions: true,
             }),
         ) || manifest[0]
-      ).assets;
+      ).manifest;
     }
 
     return this.resolvedAssetList;
