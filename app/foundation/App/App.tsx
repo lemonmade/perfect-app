@@ -1,3 +1,7 @@
+import '@shopify/polyfills/baseline';
+import '@shopify/polyfills/intl';
+import '@shopify/polyfills/url';
+
 import * as React from 'react';
 import {hot} from 'react-hot-loader';
 
