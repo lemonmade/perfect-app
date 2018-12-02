@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Manager, {State} from './manager';
+import {MANAGED_ATTRIBUTE} from './utilities';
 
 const {Provider, Consumer} = React.createContext<Manager>(new Manager());
 
@@ -38,7 +39,7 @@ class HtmlManagerProvider extends React.Component<Props> {
 }
 
 function updateOnClient(state: State) {
-  const {title} = state;
+  const {title, metas, links} = state;
   let titleElement = document.querySelector('title');
 
   if (title == null) {
@@ -55,6 +56,36 @@ function updateOnClient(state: State) {
   }
 
   titleElement.textContent = title;
+
+  const fragment = document.createDocumentFragment();
+
+  for (const meta of metas) {
+    const element = document.createElement('meta');
+    element.setAttribute(MANAGED_ATTRIBUTE, 'true');
+
+    for (const [attribute, value] of Object.entries(meta)) {
+      element.setAttribute(attribute, value);
+    }
+
+    fragment.appendChild(element);
+  }
+
+  for (const link of links) {
+    const element = document.createElement('link');
+    element.setAttribute(MANAGED_ATTRIBUTE, 'true');
+
+    for (const [attribute, value] of Object.entries(link)) {
+      element.setAttribute(attribute, value);
+    }
+
+    fragment.appendChild(element);
+  }
+
+  for (const node of document.querySelectorAll(`[${MANAGED_ATTRIBUTE}]`)) {
+    node.remove();
+  }
+
+  document.head.appendChild(fragment);
 }
 
 export {HtmlManagerProvider as Provider, Consumer};

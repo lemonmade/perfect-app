@@ -6,7 +6,8 @@ interface Title {
 
 export interface State {
   title?: string;
-  meta: React.HTMLProps<HTMLMetaElement>[];
+  metas: React.HTMLProps<HTMLMetaElement>[];
+  links: React.HTMLProps<HTMLLinkElement>[];
 }
 
 interface Subscription {
@@ -21,12 +22,12 @@ export default class Manager {
   private links: React.HTMLProps<HTMLLinkElement>[] = [];
   private subscriptions = new Set<Subscription>();
 
-  get state() {
+  get state(): State {
     const lastTitle = this.titles[this.titles.length - 1];
 
     return {
       title: lastTitle && lastTitle.title,
-      meta: this.metas,
+      metas: this.metas,
       links: this.links,
     };
   }

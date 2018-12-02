@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Title, Meta, Link} from '@shopify/react-html-next';
+import {Title, Meta, Favicon} from '@shopify/react-html-next';
 
 interface Props {
   title?: string;
@@ -7,9 +7,7 @@ interface Props {
 }
 
 export default function Baseline({favicon, title}: Props) {
-  const faviconMarkup = favicon ? (
-    <Link rel="shortcut icon" type="image/x-icon" href={favicon} />
-  ) : null;
+  const faviconMarkup = favicon ? <Favicon source={favicon} /> : null;
 
   const titleMarkup = title ? <Title>{title}</Title> : null;
 

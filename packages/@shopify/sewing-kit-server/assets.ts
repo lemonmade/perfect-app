@@ -70,9 +70,9 @@ export default class Assets {
     const {userAgent} = this;
 
     if (userAgent == null) {
-      this.resolvedAssetList = manifest[manifest.length - 1].manifest;
+      this.resolvedAssetList = manifest[manifest.length - 1].assets;
     } else if (manifest.length === 1) {
-      this.resolvedAssetList = manifest[0].manifest;
+      this.resolvedAssetList = manifest[0].assets;
     } else {
       this.resolvedAssetList = (
         manifest.find(
@@ -85,7 +85,7 @@ export default class Assets {
               allowHigherVersions: true,
             }),
         ) || manifest[0]
-      ).manifest;
+      ).assets;
     }
 
     return this.resolvedAssetList;

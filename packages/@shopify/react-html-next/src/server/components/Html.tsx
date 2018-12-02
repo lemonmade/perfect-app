@@ -3,6 +3,7 @@ import {renderToString} from 'react-dom/server';
 
 import {Script, Style} from '../../components';
 import Manager from '../../manager';
+import {MANAGED_ATTRIBUTE} from '../../utilities';
 
 import Serialize from './Serialize';
 
@@ -42,16 +43,17 @@ export default function Html({
       ))
     : null;
 
+  const managedProps = {[MANAGED_ATTRIBUTE]: true};
   const titleMarkup = extracted ? <title>{extracted.title}</title> : null;
   const metaMarkup = extracted
-    ? extracted.meta.map((metaProps, index) => (
-        <meta key={index} {...metaProps} />
+    ? extracted.metas.map((metaProps, index) => (
+        <meta key={index} {...managedProps} {...metaProps} />
       ))
     : null;
 
   const linkMarkup = extracted
     ? extracted.links.map((linkProps, index) => (
-        <link key={index} {...linkProps} />
+        <link key={index} {...managedProps} {...linkProps} />
       ))
     : null;
 

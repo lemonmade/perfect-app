@@ -3,3 +3,4 @@ export {default as Script} from './Script';
 export {default as Title} from './Title';
 export {default as Meta} from './Meta';
 export {default as Link} from './Link';
+export {default as Favicon} from './Favicon';

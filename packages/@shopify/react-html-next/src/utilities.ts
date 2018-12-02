@@ -1,4 +1,6 @@
 export const SERIALIZE_ATTRIBUTE = 'data-serialized-id';
+export const MANAGED_ATTRIBUTE = 'data-react-html';
+export const EFFECT_ID = Symbol('html');
 
 export function getSerializationsFromDocument() {
   const serializations = new Map<string, unknown>();
@@ -45,7 +47,7 @@ export function showPage(): Promise<void> {
   return (
     // eslint-disable-next-line no-process-env
     process.env.NODE_ENV === 'development' && typeof document !== 'undefined'
-      ? new Promise(resolve => {
+      ? new Promise((resolve) => {
           setTimeout(() => {
             document.body.style.display = '';
             resolve();

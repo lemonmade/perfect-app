@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {Effect} from '@shopify/react-effect';
 import {Consumer} from '../context';
+import {EFFECT_ID} from '../utilities';
 
 type Props = React.HTMLProps<HTMLLinkElement>;
-
-export const EXTRACT_ID = Symbol('html');
 
 export default class Link extends React.PureComponent<Props> {
   private removeLink?: () => void;
@@ -21,7 +20,7 @@ export default class Link extends React.PureComponent<Props> {
         {(manager) => (
           <Effect
             key={JSON.stringify(this.props)}
-            kind={EXTRACT_ID}
+            kind={EFFECT_ID}
             perform={() => {
               if (this.removeLink) {
                 this.removeLink();
