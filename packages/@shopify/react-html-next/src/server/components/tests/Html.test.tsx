@@ -1,18 +1,11 @@
 import * as React from 'react';
 import {mount, CommonWrapper} from 'enzyme';
-import {HelmetData} from 'react-helmet';
 import withEnv from '@shopify/with-env';
 
 import {Script, Style} from '../../../components';
 
 import Html from '../Html';
 import Serialize from '../Serialize';
-
-jest.mock('react-helmet', () => {
-  return {
-    renderStatic: jest.fn(),
-  };
-});
 
 jest.mock(
   '../Serialize',
@@ -22,14 +15,7 @@ jest.mock(
     },
 );
 
-const helmetMock = require.requireMock('react-helmet');
-
 describe('<Html />', () => {
-  beforeEach(() => {
-    helmetMock.renderStatic.mockReset();
-    helmetMock.renderStatic.mockImplementation(mockHelmet);
-  });
-
   const mockProps = {children: <div />};
 
   it('defaults to setting the lang to "en" on the html', () => {
@@ -84,7 +70,7 @@ describe('<Html />', () => {
       for (const script of scripts) {
         expect(
           body.findWhere(
-            element =>
+            (element) =>
               element.is(Script) && element.prop('src') === script.path,
           ),
         ).toHaveLength(1);
@@ -101,7 +87,7 @@ describe('<Html />', () => {
       for (const script of scripts) {
         expect(
           head.findWhere(
-            element =>
+            (element) =>
               element.is(Script) && element.prop('src') === script.path,
           ),
         ).toHaveLength(1);
@@ -118,80 +104,11 @@ describe('<Html />', () => {
       for (const style of styles) {
         expect(
           head.findWhere(
-            element => element.is(Style) && element.prop('href') === style.path,
+            (element) =>
+              element.is(Style) && element.prop('href') === style.path,
           ),
         ).toHaveLength(1);
       }
-    });
-  });
-
-  describe('helmet', () => {
-    it('includes the title component', () => {
-      const title = <title>Hello world!</title>;
-      helmetMock.renderStatic.mockImplementation(() =>
-        mockHelmet({
-          title: mockHelmetData('', title),
-        }),
-      );
-      const html = mount(<Html {...mockProps} />);
-      expect(html.find('head').contains(title)).toBe(true);
-    });
-
-    it('includes the meta component', () => {
-      const meta = <meta content="Hello world" />;
-      helmetMock.renderStatic.mockImplementation(() =>
-        mockHelmet({
-          meta: mockHelmetData('', meta),
-        }),
-      );
-      const html = mount(<Html {...mockProps} />);
-      expect(html.find('head').contains(meta)).toBe(true);
-    });
-
-    it('includes the link component', () => {
-      const link = <link rel="hello/world" />;
-      helmetMock.renderStatic.mockImplementation(() =>
-        mockHelmet({
-          link: mockHelmetData('', link),
-        }),
-      );
-      const html = mount(<Html {...mockProps} />);
-      expect(html.find('head').contains(link)).toBe(true);
-    });
-
-    it('includes the script component', () => {
-      const script = (
-        <script dangerouslySetInnerHTML={{__html: 'alert("hi")'}} />
-      );
-      helmetMock.renderStatic.mockImplementation(() =>
-        mockHelmet({
-          script: mockHelmetData('', script),
-        }),
-      );
-      const html = mount(<Html {...mockProps} />);
-      expect(html.find('head').contains(script)).toBe(true);
-    });
-
-    it('includes the htmlAttributes', () => {
-      const htmlAttributes = {className: 'hello world', 'data-baz': true};
-      helmetMock.renderStatic.mockImplementation(() =>
-        mockHelmet({
-          htmlAttributes: mockHelmetData('', htmlAttributes),
-        }),
-      );
-      const html = mount(<Html {...mockProps} />);
-      expect(html.find('html').props()).toMatchObject(htmlAttributes);
-    });
-
-    it('includes the bodyAttributes', () => {
-      const bodyAttributes = {className: 'hello world', 'data-baz': true};
-      helmetMock.renderStatic.mockImplementation(() =>
-        mockHelmet({
-          bodyAttributes: mockHelmetData('', bodyAttributes),
-        }),
-      );
-      const html = mount(<Html {...mockProps} />);
-      expect(html.find('body').props()).toMatchObject(bodyAttributes);
     });
   });
 
@@ -207,11 +124,11 @@ describe('<Html />', () => {
       );
       const headContents = html.find('head').children();
 
-      const serializerIndex = findIndex(headContents, element =>
+      const serializerIndex = findIndex(headContents, (element) =>
         element.is(Serialize),
       );
 
-      const scriptsIndex = findIndex(headContents, element =>
+      const scriptsIndex = findIndex(headContents, (element) =>
         element.is(Script),
       );
 
@@ -231,11 +148,11 @@ describe('<Html />', () => {
       );
       const bodyContent = html.find('body').children();
 
-      const serializerIndex = findIndex(bodyContent, element =>
+      const serializerIndex = findIndex(bodyContent, (element) =>
         element.is(Serialize),
       );
 
-      const scriptsIndex = findIndex(bodyContent, element =>
+      const scriptsIndex = findIndex(bodyContent, (element) =>
         element.is(Script),
       );
 
@@ -260,31 +177,4 @@ function findIndex(
     throw new Error(`findIndex matched 0 elements`);
   }
   return found;
-}
-
-function mockHelmet(mock: Partial<HelmetData> = {}): HelmetData {
-  return {
-    base: mockHelmetData('', <div />),
-    bodyAttributes: mockHelmetData('', {}),
-    htmlAttributes: mockHelmetData('', {}),
-    link: mockHelmetData('', <link />),
-    meta: mockHelmetData('', <meta />),
-    noscript: mockHelmetData('', <noscript />),
-    script: mockHelmetData('', <script />),
-    style: mockHelmetData('', <link />),
-    title: mockHelmetData('', <title />),
-    titleAttributes: mockHelmetData('', <script />),
-    ...mock,
-  };
-}
-
-function mockHelmetData<T>(str: string, component: T) {
-  return {
-    toString() {
-      return str;
-    },
-    toComponent() {
-      return component as any;
-    },
-  };
 }

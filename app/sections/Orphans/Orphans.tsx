@@ -23,8 +23,8 @@ const ReduxUser = connect(
   }),
 )(({name}: {name: string}) => <div>Hello, {name}</div>);
 
-export default class Orphans extends React.Component<never, State> {
-  state = {favicon: false};
+export default class Orphans extends React.Component<{}, State> {
+  state: State = {favicon: false};
 
   render() {
     const {favicon} = this.state;

@@ -1033,6 +1033,11 @@
   dependencies:
     "@types/react" ">=16.4.0"
 
+"@shopify/with-env@^1.0.0":
+  version "1.0.0"
+  resolved "https://packages.shopify.io/shopify/node/npm/@shopify/with-env/-/with-env-1.0.0.tgz#f95e4ba610e0d9008bb64d85835e325b9305fc3b"
+  integrity sha1-+V5LphDg2QCLtk2Fg14yW5MF/Ds=
+
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
