@@ -61,21 +61,22 @@ export default class Assets {
       return this.resolvedAssetList;
     }
 
-    const manifest = await loadManifest();
+    const consolidatedManifest = await loadConsolidatedManifest();
 
-    if (manifest.length === 0) {
+    if (consolidatedManifest.length === 0) {
       throw new Error('No builds were found.');
     }
 
     const {userAgent} = this;
 
     if (userAgent == null) {
-      this.resolvedAssetList = manifest[manifest.length - 1].assets;
-    } else if (manifest.length === 1) {
-      this.resolvedAssetList = manifest[0].assets;
+      this.resolvedAssetList =
+        consolidatedManifest[consolidatedManifest.length - 1].manifest;
+    } else if (consolidatedManifest.length === 1) {
+      this.resolvedAssetList = consolidatedManifest[0].manifest;
     } else {
       this.resolvedAssetList = (
-        manifest.find(
+        consolidatedManifest.find(
           ({browsers}) =>
             browsers == null ||
             matchesUA(userAgent, {
@@ -84,30 +85,30 @@ export default class Assets {
               ignorePatch: true,
               allowHigherVersions: true,
             }),
-        ) || manifest[0]
-      ).assets;
+        ) || consolidatedManifest[0]
+      ).manifest;
     }
 
     return this.resolvedAssetList;
   }
 }
 
-let manifestPromise: Promise<ConsolidatedManifest> | null = null;
+let consolidatedManifestPromise: Promise<ConsolidatedManifest> | null = null;
 
-function loadManifest() {
-  if (manifestPromise) {
-    return manifestPromise;
+function loadConsolidatedManifest() {
+  if (consolidatedManifestPromise) {
+    return consolidatedManifestPromise;
   }
 
-  manifestPromise = readJSON(
+  consolidatedManifestPromise = readJSON(
     resolve(__dirname, '../../../build/client/assets.json'),
   );
 
-  return manifestPromise;
+  return consolidatedManifestPromise;
 }
 
 export function clearCache() {
-  manifestPromise = null;
+  consolidatedManifestPromise = null;
 }
 
 function getAssetsForEntrypoint(name: string, {entrypoints}: AssetList) {
