@@ -1,17 +1,14 @@
 import * as React from 'react';
 
-import {Query} from '@shopify/react-apollo';
 import {withI18n, WithI18nProps} from '@shopify/react-i18n';
 import {Title} from '@shopify/react-html-next';
 import compose from '@shopify/react-compose';
 import {Page, Card, ResourceList, Avatar} from '@shopify/polaris';
 import {parseGid, nodesFromEdges} from '@shopify/admin-graphql-api-utilities';
 
-import en from './translations/en.json';
+import CustomerListQuery from '../CustomerListQuery';
 
-import customerListQuery, {
-  CustomerListQueryData,
-} from './graphql/CustomerListQuery.graphql';
+import en from './translations/en.json';
 
 interface State {
   selectedCustomers: string[] | 'All';
@@ -34,15 +31,20 @@ class CustomerList extends React.PureComponent<WithI18nProps, State> {
             url: '/customers/new',
           }}
         >
-          <Query query={customerListQuery}>
-            {({data}) => {
+          <CustomerListQuery>
+            {({data, loading}) => {
               const customers =
                 data && data.customers
                   ? nodesFromEdges(data.customers.edges)
                   : [];
 
+              const keepFresh = loading ? null : (
+                <CustomerListQuery.KeepFresh />
+              );
+
               return (
                 <Card>
+                  {keepFresh}
                   <ResourceList
                     items={customers}
                     selectedItems={this.state.selectedCustomers}
@@ -63,14 +65,14 @@ class CustomerList extends React.PureComponent<WithI18nProps, State> {
                 </Card>
               );
             }}
-          </Query>
+          </CustomerListQuery>
         </Page>
       </>
     );
   }
 }
 
-function urlForCustomer({id}: CustomerListQueryData.CustomersEdgesNode) {
+function urlForCustomer({id}: {id: string}) {
   return `/customers/${parseGid(id)}`;
 }
 

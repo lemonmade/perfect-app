@@ -16,6 +16,8 @@ import {composeGid, parseGid} from '@shopify/admin-graphql-api-utilities';
 
 import {NotFound} from 'components';
 
+import CustomerListQuery from '../CustomerListQuery';
+
 import customerDetailsQuery, {
   CustomerDetailsQueryData,
 } from './graphql/CustomerDetailsQuery.graphql';
@@ -78,75 +80,82 @@ export default class CustomerDetails extends React.Component<Props, State> {
           const customer = (data && data.customer) || undefined;
 
           return (
-            <FormState
-              onSubmit={() => this.setState({mutating: true})}
-              initialValues={initialValuesFromCustomer(customer)}
-            >
-              {({submit, fields, dirty}) => {
-                const title = customer ? customer.displayName : 'New customer';
+            <>
+              <CustomerListQuery.Prefetch />
+              <FormState
+                onSubmit={() => this.setState({mutating: true})}
+                initialValues={initialValuesFromCustomer(customer)}
+              >
+                {({submit, fields, dirty}) => {
+                  const title = customer
+                    ? customer.displayName
+                    : 'New customer';
 
-                const primaryAction = {
-                  content: 'Save',
-                  onAction: submit,
-                  disabled: !dirty || mutating,
-                  loading: mutating,
-                };
-
-                let mutationMarkup: React.ReactNode = null;
-
-                if (mutating) {
-                  const variables = {
-                    customer: {
-                      id: customer && customer.id,
-                      firstName: fields.firstName.value,
-                      lastName: fields.lastName.value,
-                    },
+                  const primaryAction = {
+                    content: 'Save',
+                    onAction: submit,
+                    disabled: !dirty || mutating,
+                    loading: mutating,
                   };
 
-                  mutationMarkup = isCreating ? (
-                    <Mutation
-                      mutation={createCustomerMutation}
-                      onCompleted={this.handleCustomerCreation}
-                      variables={variables}
-                    />
-                  ) : (
-                    <Mutation
-                      mutation={updateCustomerMutation}
-                      variables={variables}
-                    />
-                  );
-                }
+                  let mutationMarkup: React.ReactNode = null;
 
-                return (
-                  <>
-                    <Title>{title}</Title>
-                    {mutationMarkup}
-                    <Page
-                      title={title}
-                      breadcrumbs={[{url: '/customers', content: 'Customers'}]}
-                      primaryAction={primaryAction}
-                    >
-                      <Form onSubmit={submit}>
-                        <Card sectioned>
-                          <FormLayout>
-                            <TextField
-                              id="firstName"
-                              label="First name"
-                              {...fields.firstName}
-                            />
-                            <TextField
-                              id="lastName"
-                              label="Last name"
-                              {...fields.lastName}
-                            />
-                          </FormLayout>
-                        </Card>
-                      </Form>
-                    </Page>
-                  </>
-                );
-              }}
-            </FormState>
+                  if (mutating) {
+                    const variables = {
+                      customer: {
+                        id: customer && customer.id,
+                        firstName: fields.firstName.value,
+                        lastName: fields.lastName.value,
+                      },
+                    };
+
+                    mutationMarkup = isCreating ? (
+                      <Mutation
+                        mutation={createCustomerMutation}
+                        onCompleted={this.handleCustomerCreation}
+                        variables={variables}
+                      />
+                    ) : (
+                      <Mutation
+                        mutation={updateCustomerMutation}
+                        variables={variables}
+                      />
+                    );
+                  }
+
+                  return (
+                    <>
+                      <Title>{title}</Title>
+                      {mutationMarkup}
+                      <Page
+                        title={title}
+                        breadcrumbs={[
+                          {url: '/customers', content: 'Customers'},
+                        ]}
+                        primaryAction={primaryAction}
+                      >
+                        <Form onSubmit={submit}>
+                          <Card sectioned>
+                            <FormLayout>
+                              <TextField
+                                id="firstName"
+                                label="First name"
+                                {...fields.firstName}
+                              />
+                              <TextField
+                                id="lastName"
+                                label="Last name"
+                                {...fields.lastName}
+                              />
+                            </FormLayout>
+                          </Card>
+                        </Form>
+                      </Page>
+                    </>
+                  );
+                }}
+              </FormState>
+            </>
           );
         }}
       </Query>
