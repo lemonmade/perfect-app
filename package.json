@@ -20,6 +20,7 @@
     "@shopify/koa-shopify-graphql-proxy": "^2.1.2",
     "@shopify/network": "^1.0.2",
     "@shopify/polaris": "^2.6.1",
+    "@shopify/polyfills": "^0.0.5",
     "@shopify/react-compose": "^0.1.7",
     "@shopify/react-effect": "^1.0.1",
     "@shopify/react-form-state": "^0.5.0",
@@ -44,8 +45,7 @@
     "react-redux": "^5.1.1",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "redux": "^4.0.1",
-    "shopify-polyfills-beta": "0.0.1-beta.2"
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "@shopify/enzyme-utilities": "^1.1.1",
